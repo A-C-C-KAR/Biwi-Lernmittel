@@ -9,16 +9,6 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Chosen Palette: Warm Neutrals & Sage -->
-    <!-- 
-        Background: #fdfbf7 (Warm White/Isabelline)
-        Surface: #ffffff (White)
-        Primary Text: #1f2937 (Gray 800)
-        Secondary Text: #4b5563 (Gray 600)
-        Accent: #78716c (Stone 500)
-        Interactive/Highlight: #84a98c (Sage Green) -> Tailwind: emerald-600/500
-        Chart Colors: Muted Earth Tones
-    -->
     <script>
         tailwind.config = {
             theme: {
@@ -27,7 +17,7 @@
                         bg: '#fdfbf7',
                         surface: '#ffffff',
                         primary: '#2c3e50',
-                        accent: '#556b2f', // Dark Olive Green
+                        accent: '#556b2f', 
                         soft: '#e8e6e1',
                     },
                     fontFamily: {
@@ -38,22 +28,6 @@
             }
         }
     </script>
-    
-    <!-- Application Structure Plan: 
-         1. Dashboard View: High-level overview of progress across the 8 thematic sections defined in the source report. Visualizes mastery using Chart.js.
-         2. Learning View (Modules): Interactive accordion list of the 50 questions, grouped by category. Allows users to mark questions as "Learned". Includes brief "Solution Hints" synthesized from the context.
-         3. Focus Mode: A specialized view for focusing on one question at a time (Flashcard style).
-         Rationale: The report contains a dense list of 50 complex questions. A linear list is overwhelming. Grouping them by the report's categories and adding progress tracking gamifies the study process and makes the large volume of information manageable.
-    -->
-
-    <!-- Visualization & Content Choices:
-         - Progress Charts (Chart.js): Bar chart for category performance, Doughnut for overall completion. Goal: Inform & Motivate.
-         - Interactive List (HTML/JS): Expandable details for questions. Goal: Organize & Explore.
-         - Solution Hints (Text): Synthesized brief answers based on the uploaded pedagogic texts (Adler, Kant, etc.) to provide immediate value beyond just the question text.
-         - State Management (JS): Persists "learned" status during the session.
-    -->
-    
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #fdfbf7; color: #1f2937; }
@@ -81,7 +55,6 @@
         .btn-primary { @apply bg-emerald-700 text-white px-4 py-2 rounded-md hover:bg-emerald-800 transition-colors shadow-sm; }
         .btn-secondary { @apply bg-stone-200 text-stone-700 px-4 py-2 rounded-md hover:bg-stone-300 transition-colors; }
         
-        /* Custom scrollbar for cleaner look */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
@@ -111,7 +84,6 @@
         
         <!-- Dashboard View -->
         <div id="view-dashboard" class="space-y-8 animate-fade-in">
-            <!-- Intro Section -->
             <div class="bg-white rounded-xl p-8 shadow-sm border border-stone-100">
                 <h1 class="text-3xl font-bold text-stone-800 mb-4">Willkommen zur Klausurvorbereitung</h1>
                 <p class="text-lg text-stone-600 leading-relaxed max-w-3xl">
@@ -124,12 +96,11 @@
                     </button>
                     <div class="flex items-center space-x-2 text-stone-500 text-sm bg-stone-50 px-4 py-2 rounded-lg border border-stone-100">
                         <span>📊</span>
-                        <span id="total-progress-text">0/50 Fragen gemeistert</span>
+                        <span id="total-progress-text">0/0 Fragen gemeistert</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Overall Progress Chart -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
@@ -161,7 +132,8 @@
             <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-stone-800">Fragenkatalog</h2>
-                    <p class="text-stone-500">50 Fragen sortiert nach 8 Themenbereichen</p>
+                    <!-- Dynamische Zähler eingebaut -->
+                    <p class="text-stone-500"><span id="lbl-total-q">0</span> Fragen sortiert nach <span id="lbl-total-c">0</span> Themenbereichen</p>
                 </div>
                 <div class="flex space-x-3 mt-4 md:mt-0">
                     <button onclick="app.expandAll()" class="text-sm text-stone-600 hover:text-emerald-700 font-medium">Alle öffnen</button>
@@ -170,10 +142,8 @@
                 </div>
             </div>
 
-            <!-- Category Container (Populated by JS) -->
-            <div id="categories-container" class="space-y-6">
-                <!-- Categories will be injected here -->
-            </div>
+            <!-- Category Container -->
+            <div id="categories-container" class="space-y-6"></div>
         </div>
 
         <!-- Focus View (Flashcards) -->
@@ -181,7 +151,7 @@
             <div class="w-full max-w-2xl">
                 <div class="flex justify-between items-center mb-4 px-2">
                     <span id="focus-category" class="text-xs font-bold tracking-wider uppercase text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Thema</span>
-                    <span id="focus-counter" class="text-stone-400 font-mono text-sm">1/50</span>
+                    <span id="focus-counter" class="text-stone-400 font-mono text-sm">1/0</span>
                 </div>
 
                 <!-- Flashcard -->
@@ -226,10 +196,15 @@
         </div>
     </footer>
 
-    <!-- Application Logic -->
     <script>
-        // --- Data Source ---
-        // Questions extracted from the source report
+        // =========================================================================
+        // 📝 HIER FRAGEN UND THEMEN BEARBEITEN
+        // =========================================================================
+        // Du kannst beliebig Themenblöcke hinzufügen, löschen oder ändern.
+        // WICHTIG: Jede Frage braucht eine eigene "id" (eine Zahl, die sich nicht wiederholt), 
+        // damit der Speicher funktioniert. Die Reihenfolge der Nummern ist egal.
+        // =========================================================================
+        
         const categories = [
             {
                 id: 'wiss',
@@ -270,7 +245,7 @@
                 title: '4. Klassische Pädagogik: Rousseau',
                 questions: [
                     { id: 17, q: 'Erläutern Sie Rousseaus Grundannahme: „Alles ist gut, wie es aus den Händen des Schöpfers kommt...“', a: 'Naturzustand ist gut. Gesellschaft/Kultur verdirbt den Menschen durch Ungleichheit, Konkurrenz und falsche Bedürfnisse. Erziehung muss die natürliche Güte schützen.' },
-                    { id: 18, q: 'Was versteht Rousseau unter „Negativer Erziehung“?', a: 'Nicht direktes Belehren oder Tugend-Predigen, sondern Bewahren des Zöglings vor schädlichen Einflüssen ("Zeit verlieren statt gewinnen"). Lernen durch Erfahrung, nicht durch Worte.' },
+                    { id: 18, q: 'Was versteht Rousseau unter „Negativer Erziehung“?', a: 'Im Kindesalter, ist es ein nicht direktes Belehren oder Tugend-Predigen, sondern Bewahren des Zöglings vor schädlichen Einflüssen ("Zeit verlieren statt gewinnen"). Lernen durch Erfahrung, nicht durch Worte.' },
                     { id: 19, q: 'Nennen und erläutern Sie die drei Quellen der Erziehung nach Rousseau.', a: '1. Natur (innere Entwicklung der Organe/Kräfte). 2. Dinge (Erfahrung mit der Umwelt). 3. Menschen (Gebrauch der Fähigkeiten). Sie müssen harmonieren.' },
                     { id: 20, q: 'Warum ist die Kindheit laut Rousseau als Eigenwert und nicht nur als Vorbereitungszeit zu sehen?', a: 'Das Kind hat eine eigene Art zu sehen, zu denken und zu fühlen. Man darf die Gegenwart nicht der Zukunft opfern ("Lasst die Kindheit im Kinder reifen").' },
                     { id: 21, q: 'Erläutern Sie den Begriff der „Perfectibilité“.', a: 'Die Fähigkeit des Menschen zur (unbegrenzten) Vervollkommnung. Unterscheidet ihn vom Tier, ist aber auch Grund für seinen möglichen Niedergang.' },
@@ -317,9 +292,9 @@
                 id: 'handeln',
                 title: '8. Pädagogisches Handeln, Theorie & Praxis',
                 questions: [
-                    { id: 41, q: 'Dietrich Benner: Prinzip der „Bildsamkeit“.', a: 'Anerkennung des Anderen als zur Selbstbestimmung fähiges Wesen. Keine bloße Formbarkeit, sondern Mitwirkung des Zöglings.' },
-                    { id: 42, q: '„Aufforderung zur Selbsttätigkeit“.', a: 'Erziehung ist Interaktion: Der Erzieher fordert den Zögling auf, selbst tätig zu werden. Der Zögling antwortet durch Handeln.' },
-                    { id: 43, q: '„Negativität der Erfahrung“ (Benner).', a: 'Lernen geschieht oft durch Scheitern, Widerstand, Enttäuschung. Erfahrungen, die bisherige Annahmen widerlegen, sind besonders bildend.' },
+                    { id: 41, q: 'Was beschreibt Dietrich Benners: Prinzip der „Bildsamkeit“.', a: 'Anerkennung des Anderen als zur Selbstbestimmung fähiges Wesen. Keine bloße Formbarkeit, sondern Mitwirkung des Zöglings.' },
+                    { id: 42, q: '„Was ist die Aufforderung zur Selbsttätigkeit“.', a: 'Erziehung ist Interaktion: Der Erzieher fordert den Zögling auf, selbst tätig zu werden. Der Zögling antwortet durch Handeln.' },
+                    { id: 43, q: '„Was ist die Negativität der Erfahrung“ (Benner).', a: 'Lernen geschieht oft durch Scheitern, Widerstand, Enttäuschung. Erfahrungen, die bisherige Annahmen widerlegen, sind besonders bildend.' },
                     { id: 44, q: '„Pädagogischer Bezug“ nach Herman Nohl.', a: 'Das leidenschaftliche Verhältnis des Erziehers zum Zögling. Zum Wohl des Zöglings (nicht für Staat/Wirtschaft). Geprägt von Liebe und Autorität.' },
                     { id: 45, q: '„Sokratischer Eid“ von Hartmut von Hentig.', a: 'Verpflichtung der Lehrer/Pädagogen zum Schutz des Kindes. "Ich verpflichte mich, die Eigenart jedes Kindes zu achten...".' },
                     { id: 46, q: 'Verhältnis Theorie und Praxis nach Erich Weniger.', a: 'Theorie ist die "Theorie der Praxis" (für die Praxis, aus der Praxis). Theorie soll die Praxis aufklären, nicht bevormunden.' },
@@ -331,7 +306,10 @@
             }
         ];
 
-        // --- App State & Logic ---
+        // =========================================================================
+        // ⚙️ AB HIER NICHTS MEHR ÄNDERN (App-Logik)
+        // =========================================================================
+
         const app = {
             state: {
                 view: 'dashboard',
@@ -340,8 +318,21 @@
                 isFocusAnswerVisible: false
             },
 
+            // Hilfsfunktionen für dynamische Zählung
+            getTotalQuestions() {
+                return categories.reduce((sum, cat) => sum + cat.questions.length, 0);
+            },
+            
+            getAllQuestionsFlat() {
+                return categories.flatMap(c => c.questions.map(q => ({...q, category: c.title})));
+            },
+
             // --- Initialization ---
             init() {
+                // Dynamische Texte beim Start setzen
+                document.getElementById('lbl-total-q').textContent = this.getTotalQuestions();
+                document.getElementById('lbl-total-c').textContent = categories.length;
+
                 this.renderCategories();
                 this.updateCharts();
                 this.updateUI();
@@ -359,7 +350,6 @@
             setView(viewName) {
                 this.state.view = viewName;
                 
-                // Update Nav Styling
                 ['dashboard', 'learn', 'focus'].forEach(v => {
                     const el = document.getElementById(`nav-${v}`);
                     if (v === viewName) {
@@ -374,7 +364,7 @@
                     if (v === viewName) {
                         container.classList.remove('hidden');
                         if(v === 'focus') this.renderFocusCard();
-                        if(v === 'dashboard') this.updateCharts(); // Refresh charts to show new progress
+                        if(v === 'dashboard') this.updateCharts(); 
                     } else {
                         container.classList.add('hidden');
                     }
@@ -422,7 +412,7 @@
             },
 
             updateUI() {
-                const total = 50;
+                const total = this.getTotalQuestions();
                 const learned = this.state.learnedQuestions.length;
                 document.getElementById('total-progress-text').textContent = `${learned}/${total} Fragen gemeistert`;
             },
@@ -439,8 +429,9 @@
 
             // --- Focus Mode Logic ---
             renderFocusCard() {
-                // Flatten all questions
-                const allQuestions = categories.flatMap(c => c.questions.map(q => ({...q, category: c.title})));
+                const allQuestions = this.getAllQuestionsFlat();
+                if(allQuestions.length === 0) return; // Fallback falls Liste leer
+                
                 const q = allQuestions[this.state.currentFocusIndex];
                 
                 const qEl = document.getElementById('focus-question');
@@ -453,15 +444,16 @@
 
                 qEl.textContent = q.q;
                 aEl.textContent = q.a;
-                cEl.textContent = q.category.split('.')[1].trim(); // Shorten cat title
+                
+                // Entfernt führende Nummern aus dem Titel für eine saubere Anzeige, egal wie der Titel heißt
+                cEl.textContent = q.category.replace(/^\d+\.\s*/, ''); 
+                
                 countEl.textContent = `${this.state.currentFocusIndex + 1}/${allQuestions.length}`;
                 
-                // Reset State
                 this.state.isFocusAnswerVisible = false;
                 containerEl.classList.add('hidden');
                 btnEl.textContent = "Antwort zeigen";
                 
-                // Update "Mark Learned" button state for current card
                 if (this.state.learnedQuestions.includes(q.id)) {
                      markBtn.classList.add('opacity-50', 'cursor-not-allowed');
                      markBtn.innerHTML = '✓ Bereits gelernt';
@@ -487,7 +479,8 @@
             },
 
             nextFocus() {
-                if (this.state.currentFocusIndex < 49) {
+                const total = this.getTotalQuestions();
+                if (this.state.currentFocusIndex < total - 1) {
                     this.state.currentFocusIndex++;
                     this.renderFocusCard();
                 }
@@ -501,12 +494,12 @@
             },
             
             markCurrentFocusLearned() {
-                const allQuestions = categories.flatMap(c => c.questions);
+                const allQuestions = this.getAllQuestionsFlat();
                 const currentId = allQuestions[this.state.currentFocusIndex].id;
                 
                 if (!this.state.learnedQuestions.includes(currentId)) {
                     this.toggleLearned(currentId);
-                    this.renderFocusCard(); // Update button state
+                    this.renderFocusCard(); 
                 }
             },
 
@@ -548,13 +541,13 @@
             charts: {},
             
             updateCharts() {
-                // Prepare Data
-                const labels = categories.map(c => c.title.split(' ')[1].substring(0, 10) + '...');
+                // Sichere Label-Generierung unabhängig von der Namensstruktur
+                const labels = categories.map(c => c.title.replace(/^\d+\.\s*/, '').substring(0, 15) + '...');
                 const dataTotal = categories.map(c => c.questions.length);
                 const dataLearned = categories.map(c => c.questions.filter(q => this.state.learnedQuestions.includes(q.id)).length);
                 
                 const totalLearned = this.state.learnedQuestions.length;
-                const totalQuestions = 50;
+                const totalQuestions = this.getTotalQuestions();
 
                 // Topic Chart (Bar)
                 const ctxTopic = document.getElementById('topicChart').getContext('2d');
@@ -568,13 +561,13 @@
                             {
                                 label: 'Gelernt',
                                 data: dataLearned,
-                                backgroundColor: '#10b981', // emerald-500
+                                backgroundColor: '#10b981', 
                                 borderRadius: 4
                             },
                             {
                                 label: 'Offen',
                                 data: dataTotal.map((t, i) => t - dataLearned[i]),
-                                backgroundColor: '#e7e5e4', // stone-200
+                                backgroundColor: '#e7e5e4', 
                                 borderRadius: 4
                             }
                         ]
@@ -619,7 +612,10 @@
                             legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
                             tooltip: {
                                 callbacks: {
-                                    label: (ctx) => ` ${ctx.label}: ${ctx.raw} Fragen (${Math.round(ctx.raw/50*100)}%)`
+                                    label: (ctx) => {
+                                        let percentage = totalQuestions > 0 ? Math.round(ctx.raw/totalQuestions*100) : 0;
+                                        return ` ${ctx.label}: ${ctx.raw} Fragen (${percentage}%)`;
+                                    }
                                 }
                             }
                         },
@@ -634,10 +630,11 @@
                             ctx.font = "bold " + fontSize + "em sans-serif";
                             ctx.textBaseline = "middle";
                             ctx.fillStyle = "#1c1917";
-                            var text = Math.round((totalLearned/50)*100) + "%",
-                                textX = Math.round((width - ctx.measureText(text).width) / 2),
+                            
+                            var percentageStr = totalQuestions > 0 ? Math.round((totalLearned/totalQuestions)*100) + "%" : "0%";
+                            var textX = Math.round((width - ctx.measureText(percentageStr).width) / 2),
                                 textY = height / 2;
-                            ctx.fillText(text, textX, textY);
+                            ctx.fillText(percentageStr, textX, textY);
                             ctx.save();
                         }
                     }]
