@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klausurtrainer Allgemeine Pädagogik</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <script>
@@ -52,9 +50,6 @@
         .card-hover { transition: all 0.3s ease; }
         .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         
-        .btn-primary { @apply bg-emerald-700 text-white px-4 py-2 rounded-md hover:bg-emerald-800 transition-colors shadow-sm; }
-        .btn-secondary { @apply bg-stone-200 text-stone-700 px-4 py-2 rounded-md hover:bg-stone-300 transition-colors; }
-        
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
@@ -63,36 +58,41 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Navigation -->
     <nav class="bg-white border-b border-stone-200 shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <span class="text-xl font-bold text-emerald-800 tracking-tight">Pädagogik<span class="font-light text-stone-600">Trainer</span></span>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 md:space-x-4" id="nav-links">
                     <button onclick="app.setView('dashboard')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-dashboard">Dashboard</button>
                     <button onclick="app.setView('learn')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-learn">Fragenkatalog</button>
                     <button onclick="app.setView('focus')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-focus">Fokus-Modus</button>
+                    <button onclick="app.setView('exam')" class="text-stone-600 hover:text-red-700 px-3 py-2 rounded-md text-sm font-bold transition-colors border border-transparent hover:border-red-200" id="nav-exam">Klausur-Modus</button>
                 </div>
             </div>
         </div>
+        <div id="exam-timer-bar" class="hidden bg-red-600 text-white text-center py-2 font-bold shadow-md w-full z-40 transition-all">
+            KLAUSUR LÄUFT - Verbleibende Zeit: <span id="exam-timer-display" class="font-mono text-xl ml-2">00:00</span>
+        </div>
     </nav>
 
-    <!-- Main Content Area -->
     <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
         
-        <!-- Dashboard View -->
         <div id="view-dashboard" class="space-y-8 animate-fade-in">
             <div class="bg-white rounded-xl p-8 shadow-sm border border-stone-100">
                 <h1 class="text-3xl font-bold text-stone-800 mb-4">Willkommen zur Klausurvorbereitung</h1>
                 <p class="text-lg text-stone-600 leading-relaxed max-w-3xl">
-                    Dieser interaktive Trainer basiert auf Texten zur Allgemeinen Pädagogik. Er bespricht klassiche Fragen.
+                    Dieser interaktive Trainer basiert auf Texten zur Allgemeinen Pädagogik. Er bespricht klassische Fragen.
                     Dieses Tool <b>kann</b> nützlich sein um dein Wissen über klassische Theorien (Rousseau, Herbart, Humboldt) und moderne Bildungskritik systematisch zu überprüfen und zu vertiefen.
                 </p>
-                <div class="mt-6 flex space-x-4">
+                <div class="mt-6 flex flex-wrap gap-4">
                     <button onclick="app.setView('learn')" class="bg-emerald-700 text-white px-6 py-3 rounded-lg hover:bg-emerald-800 shadow-md transition-all font-medium">
                         Jetzt lernen starten
+                    </button>
+                    <button onclick="app.setView('exam')" class="bg-red-700 text-white px-6 py-3 rounded-lg hover:bg-red-800 shadow-md transition-all font-medium flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Test-Klausur schreiben
                     </button>
                     <div class="flex items-center space-x-2 text-stone-500 text-sm bg-stone-50 px-4 py-2 rounded-lg border border-stone-100">
                         <span>📊</span>
@@ -102,7 +102,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Overall Progress Chart -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                     <h2 class="text-xl font-semibold text-stone-800 mb-6 flex items-center">
                         <span class="w-2 h-6 bg-emerald-500 rounded-full mr-3"></span>
@@ -114,7 +113,6 @@
                     <p class="text-center text-sm text-stone-500 mt-4">Du kannst Fragen im Katalog als "Gelernt" markieren, um deinen Fortschritt hier zu sehen.</p>
                 </div>
 
-                <!-- Topic Breakdown Chart -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                     <h2 class="text-xl font-semibold text-stone-800 mb-6 flex items-center">
                         <span class="w-2 h-6 bg-stone-500 rounded-full mr-3"></span>
@@ -127,12 +125,10 @@
             </div>
         </div>
 
-        <!-- Learn View (Questions List) -->
         <div id="view-learn" class="hidden space-y-6">
             <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-stone-800">Fragenkatalog</h2>
-                    <!-- Dynamische Zähler eingebaut -->
                     <p class="text-stone-500"><span id="lbl-total-q">0</span> Fragen sortiert nach <span id="lbl-total-c">0</span> Themenbereichen</p>
                 </div>
                 <div class="flex space-x-3 mt-4 md:mt-0">
@@ -141,51 +137,98 @@
                     <button onclick="app.collapseAll()" class="text-sm text-stone-600 hover:text-emerald-700 font-medium">Alle schließen</button>
                 </div>
             </div>
-
-            <!-- Category Container -->
             <div id="categories-container" class="space-y-6"></div>
         </div>
 
-        <!-- Focus View (Flashcards) -->
         <div id="view-focus" class="hidden h-full flex flex-col items-center justify-center py-12">
             <div class="w-full max-w-2xl">
                 <div class="flex justify-between items-center mb-4 px-2">
                     <span id="focus-category" class="text-xs font-bold tracking-wider uppercase text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Thema</span>
                     <span id="focus-counter" class="text-stone-400 font-mono text-sm">1/0</span>
                 </div>
-
-                <!-- Flashcard -->
                 <div class="bg-white rounded-2xl shadow-xl border border-stone-100 overflow-hidden relative min-h-[400px] flex flex-col">
                     <div class="p-8 flex-grow flex flex-col justify-center items-center text-center">
-                        <h3 id="focus-question" class="text-2xl font-serif text-stone-800 mb-6 leading-relaxed">
-                            Frage wird geladen...
-                        </h3>
-                        
+                        <h3 id="focus-question" class="text-2xl font-serif text-stone-800 mb-6 leading-relaxed">Frage wird geladen...</h3>
                         <div id="focus-answer-container" class="hidden w-full bg-stone-50 p-6 rounded-xl border border-stone-100 text-left animate-fade-in mt-4">
                             <h4 class="text-sm font-bold text-stone-500 mb-2 uppercase">Lösungshinweis:</h4>
                             <p id="focus-answer" class="text-stone-700 leading-relaxed"></p>
                         </div>
                     </div>
-                    
                     <div class="bg-stone-50 p-4 border-t border-stone-100 flex justify-between items-center">
-                        <button onclick="app.prevFocus()" class="text-stone-500 hover:text-stone-800 px-4 py-2 hover:bg-stone-200 rounded-lg transition-colors">
-                            ← Zurück
-                        </button>
-                        <button onclick="app.toggleFocusAnswer()" id="btn-reveal" class="bg-white border border-emerald-600 text-emerald-700 px-6 py-2 rounded-lg hover:bg-emerald-50 font-medium transition-colors shadow-sm">
-                            Antwort zeigen
-                        </button>
-                        <button onclick="app.nextFocus()" class="text-stone-500 hover:text-stone-800 px-4 py-2 hover:bg-stone-200 rounded-lg transition-colors">
-                            Weiter →
-                        </button>
+                        <button onclick="app.prevFocus()" class="text-stone-500 hover:text-stone-800 px-4 py-2 hover:bg-stone-200 rounded-lg transition-colors">← Zurück</button>
+                        <button onclick="app.toggleFocusAnswer()" id="btn-reveal" class="bg-white border border-emerald-600 text-emerald-700 px-6 py-2 rounded-lg hover:bg-emerald-50 font-medium transition-colors shadow-sm">Antwort zeigen</button>
+                        <button onclick="app.nextFocus()" class="text-stone-500 hover:text-stone-800 px-4 py-2 hover:bg-stone-200 rounded-lg transition-colors">Weiter →</button>
                     </div>
                 </div>
-
                 <div class="flex justify-center mt-8 space-x-4">
                     <button onclick="app.markCurrentFocusLearned()" id="btn-mark-learned" class="bg-emerald-600 text-white px-6 py-3 rounded-full hover:bg-emerald-700 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center">
                         <span>✓ Als gelernt markieren</span>
                     </button>
                 </div>
             </div>
+        </div>
+
+        <div id="view-exam" class="hidden space-y-6">
+            
+            <div id="exam-setup" class="bg-white rounded-xl p-8 shadow-sm border border-stone-100 max-w-2xl mx-auto mt-10">
+                <h2 class="text-3xl font-bold text-stone-800 mb-4">Closed-Book Klausur-Modus</h2>
+                <p class="text-stone-600 mb-6">Teste dein Wissen unter realen Bedingungen. Sobald die Klausur startet, wird die Navigation gesperrt und der Timer läuft.</p>
+                <p class="text-emerald-700 mb-6 font-semibold bg-emerald-50 p-3 rounded border border-emerald-200">
+                    ℹ️ Die Klausur zieht sich ihre Fragen automatisch aus deinem normalen Fragenkatalog. Jeder Versuch wird zufällig neu zusammengestellt!
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
+                        <label class="block text-sm font-bold text-stone-700 mb-2" for="exam-time-input">Klausurzeit (Minuten):</label>
+                        <input type="number" id="exam-time-input" value="90" min="5" max="240" class="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-red-500 focus:border-red-500">
+                    </div>
+                    
+                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
+                        <label class="block text-sm font-bold text-stone-700 mb-2" for="exam-question-count">Anzahl der Fragen:</label>
+                        <input type="number" id="exam-question-count" value="3" min="1" max="50" class="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-red-500 focus:border-red-500">
+                        <p class="text-xs text-stone-500 mt-1">Aus wie vielen Fragen soll die Test-Klausur bestehen?</p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center">
+                    <button onclick="app.startExam()" class="bg-red-700 text-white px-8 py-4 rounded-lg hover:bg-red-800 shadow-lg font-bold text-lg transition-all w-full">
+                        Klausur jetzt starten
+                    </button>
+                </div>
+            </div>
+
+            <div id="exam-active" class="hidden space-y-8">
+                <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-lg mb-8">
+                    <h3 class="text-red-800 font-bold">Wichtiger Hinweis:</h3>
+                    <p class="text-red-700 text-sm">Dies ist eine Closed-Book-Simulation. Nutze keine Hilfsmittel. Die eigentlichen Antworten schreibst du extern (auf Papier/digital). Die Textfelder hier dienen nur für deine Struktur-Notizen.</p>
+                </div>
+
+                <div id="exam-questions-container" class="space-y-12">
+                    </div>
+
+                <div class="pt-8 border-t border-stone-200 flex justify-end">
+                    <button onclick="app.finishExam()" class="bg-stone-800 text-white px-8 py-4 rounded-lg hover:bg-black shadow-lg font-bold text-lg transition-all">
+                        Klausur abgeben & Auswerten
+                    </button>
+                </div>
+            </div>
+
+            <div id="exam-results" class="hidden space-y-8">
+                <div class="bg-emerald-50 border border-emerald-200 p-8 rounded-xl text-center">
+                    <h2 class="text-3xl font-bold text-emerald-800 mb-2">Klausur beendet!</h2>
+                    <p class="text-emerald-700">Vergleiche nun deine Notizen und (externen) Antworten kritisch mit den Musterlösungen aus dem Katalog.</p>
+                </div>
+                
+                <div id="exam-results-container" class="space-y-10">
+                    </div>
+
+                <div class="flex justify-center mt-8">
+                    <button onclick="app.resetExam()" class="bg-stone-200 text-stone-700 px-6 py-3 rounded-lg hover:bg-stone-300 transition-colors font-medium">
+                        Zurück zur Startseite
+                    </button>
+                </div>
+            </div>
+
         </div>
 
     </main>
@@ -198,11 +241,8 @@
 
     <script>
         // =========================================================================
-        // 📝 HIER FRAGEN UND THEMEN BEARBEITEN
-        // =========================================================================
-        // Du kannst beliebig Themenblöcke hinzufügen, löschen oder ändern.
-        // WICHTIG: Jede Frage braucht eine eigene "id" (eine Zahl, die sich nicht wiederholt), 
-        // damit der Speicher funktioniert. Die Reihenfolge der Nummern ist egal.
+        // 📝 HIER FRAGEN UND THEMEN FÜR DEN KATALOG BEARBEITEN
+        // (Diese Liste speist nun automatisch auch den Klausur-Modus!)
         // =========================================================================
         
         const categories = [
@@ -307,7 +347,7 @@
         ];
 
         // =========================================================================
-        // ⚙️ AB HIER NICHTS MEHR ÄNDERN (App-Logik)
+        // ⚙️ APP LOGIK
         // =========================================================================
 
         const app = {
@@ -315,63 +355,211 @@
                 view: 'dashboard',
                 learnedQuestions: JSON.parse(localStorage.getItem('paed_learned') || '[]'),
                 currentFocusIndex: 0,
-                isFocusAnswerVisible: false
+                isFocusAnswerVisible: false,
+                
+                // Klausur State
+                examActive: false,
+                examTimerSeconds: 0,
+                examInterval: null,
+                currentExamQuestions: [], 
+                examAnswers: {}
             },
 
-            // Hilfsfunktionen für dynamische Zählung
-            getTotalQuestions() {
-                return categories.reduce((sum, cat) => sum + cat.questions.length, 0);
-            },
+            getTotalQuestions() { return categories.reduce((sum, cat) => sum + cat.questions.length, 0); },
             
-            getAllQuestionsFlat() {
-                return categories.flatMap(c => c.questions.map(q => ({...q, category: c.title})));
-            },
+            // Holt sich alle Fragen als flache Liste, um daraus zufällige ziehen zu können
+            getAllQuestionsFlat() { return categories.flatMap(c => c.questions.map(q => ({...q, category: c.title}))); },
 
-            // --- Initialization ---
             init() {
-                // Dynamische Texte beim Start setzen
                 document.getElementById('lbl-total-q').textContent = this.getTotalQuestions();
                 document.getElementById('lbl-total-c').textContent = categories.length;
 
                 this.renderCategories();
                 this.updateCharts();
                 this.updateUI();
-                
-                // Keyboard Nav for Focus Mode
-                document.addEventListener('keydown', (e) => {
-                    if (this.state.view !== 'focus') return;
-                    if (e.key === 'ArrowRight') this.nextFocus();
-                    if (e.key === 'ArrowLeft') this.prevFocus();
-                    if (e.key === ' ' || e.key === 'Enter') this.toggleFocusAnswer();
-                });
             },
 
-            // --- Navigation & View Mgmt ---
             setView(viewName) {
+                if (this.state.examActive && viewName !== 'exam') {
+                    if(!confirm("Klausur läuft! Wenn du die Ansicht wechselst, wird die Klausur abgebrochen. Wirklich verlassen?")) {
+                        return;
+                    } else {
+                        this.finishExam(true); // Abbruch
+                    }
+                }
+
                 this.state.view = viewName;
                 
-                ['dashboard', 'learn', 'focus'].forEach(v => {
+                ['dashboard', 'learn', 'focus', 'exam'].forEach(v => {
                     const el = document.getElementById(`nav-${v}`);
-                    if (v === viewName) {
-                        el.classList.add('text-emerald-700', 'bg-emerald-50');
-                        el.classList.remove('text-stone-600');
-                    } else {
-                        el.classList.remove('text-emerald-700', 'bg-emerald-50');
-                        el.classList.add('text-stone-600');
-                    }
-                    
                     const container = document.getElementById(`view-${v}`);
+                    
                     if (v === viewName) {
-                        container.classList.remove('hidden');
+                        if(el) {
+                            el.classList.add('bg-stone-100');
+                            if(v === 'exam') el.classList.add('text-red-700', 'bg-red-50');
+                            else el.classList.add('text-emerald-700', 'bg-emerald-50');
+                        }
+                        if(container) container.classList.remove('hidden');
+                        
                         if(v === 'focus') this.renderFocusCard();
                         if(v === 'dashboard') this.updateCharts(); 
                     } else {
-                        container.classList.add('hidden');
+                        if(el) {
+                            el.classList.remove('bg-stone-100', 'text-emerald-700', 'bg-emerald-50', 'text-red-700', 'bg-red-50');
+                            el.classList.add('text-stone-600');
+                        }
+                        if(container) container.classList.add('hidden');
                     }
                 });
             },
 
-            // --- Learning Logic ---
+            // --- Klausur Logik ---
+
+            startExam() {
+                const minutes = parseInt(document.getElementById('exam-time-input').value) || 90;
+                let questionCount = parseInt(document.getElementById('exam-question-count').value) || 3;
+                
+                // Sicherheitshalber nicht mehr Fragen abfragen, als existieren
+                const maxQuestions = this.getTotalQuestions();
+                if (questionCount > maxQuestions) questionCount = maxQuestions;
+
+                this.state.examTimerSeconds = minutes * 60;
+                this.state.examActive = true;
+                this.state.examAnswers = {}; 
+
+                // ZUFÄLLIGE FRAGEN AUS DEM NORMALEN POOL ZIEHEN
+                const allQuestions = this.getAllQuestionsFlat();
+                const shuffledPool = [...allQuestions].sort(() => 0.5 - Math.random());
+                
+                // Die ausgewählten Fragen für die Klausur aufbereiten
+                this.state.currentExamQuestions = shuffledPool.slice(0, questionCount).map(q => ({
+                    id: 'k_' + q.id,
+                    type: 'open',
+                    question: q.q,
+                    solutionText: q.a,
+                    category: q.category
+                }));
+
+                // UI umstellen
+                document.getElementById('exam-setup').classList.add('hidden');
+                document.getElementById('exam-results').classList.add('hidden');
+                document.getElementById('exam-active').classList.remove('hidden');
+                
+                document.getElementById('nav-links').classList.add('pointer-events-none', 'opacity-30');
+                document.getElementById('exam-timer-bar').classList.remove('hidden');
+
+                this.renderExamQuestions();
+                this.updateTimerDisplay();
+
+                clearInterval(this.state.examInterval);
+                this.state.examInterval = setInterval(() => {
+                    this.state.examTimerSeconds--;
+                    this.updateTimerDisplay();
+                    
+                    if(this.state.examTimerSeconds <= 0) {
+                        alert("Die Zeit ist abgelaufen! Die Klausur wird nun automatisch abgegeben.");
+                        this.finishExam();
+                    }
+                }, 1000);
+            },
+
+            updateTimerDisplay() {
+                const h = Math.floor(this.state.examTimerSeconds / 3600);
+                const m = Math.floor((this.state.examTimerSeconds % 3600) / 60);
+                const s = this.state.examTimerSeconds % 60;
+                let timeStr = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                if (h > 0) timeStr = `${h}:${timeStr}`;
+                document.getElementById('exam-timer-display').textContent = timeStr;
+            },
+
+            renderExamQuestions() {
+                const container = document.getElementById('exam-questions-container');
+                container.innerHTML = '';
+
+                this.state.currentExamQuestions.forEach((q, index) => {
+                    let html = `
+                        <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm" id="q-container-${q.id}">
+                            <div class="flex items-start mb-4">
+                                <span class="bg-stone-800 text-white font-bold w-8 h-8 flex items-center justify-center rounded-full mr-4 flex-shrink-0">${index + 1}</span>
+                                <div>
+                                    <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block mb-1">${q.category.replace(/^\d+\.\s*/, '')}</span>
+                                    <h3 class="text-lg font-bold text-stone-800 leading-relaxed">${q.question}</h3>
+                                </div>
+                            </div>
+                            
+                            <div class="ml-12 mt-4">
+                                <div class="bg-blue-50 text-blue-800 text-sm p-3 rounded mb-3 border border-blue-200">
+                                    ℹ️ Die eigentliche Beantwortung dieser Frage erfolgt extern auf Papier oder digital. Dieses Feld hier dient nur für deine kurzen Konzept-Notizen.
+                                </div>
+                                <textarea id="ans_${q.id}" class="w-full h-24 p-3 border border-stone-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 text-stone-800" placeholder="Kurze Stichpunkte / Konzept (Optional)"></textarea>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += html;
+                });
+            },
+
+            finishExam(aborted = false) {
+                clearInterval(this.state.examInterval);
+                this.state.examActive = false;
+                
+                document.getElementById('nav-links').classList.remove('pointer-events-none', 'opacity-30');
+                document.getElementById('exam-timer-bar').classList.add('hidden');
+
+                if(aborted) {
+                    this.resetExam();
+                    return;
+                }
+
+                // Antworten (Notizen) einsammeln
+                this.state.currentExamQuestions.forEach(q => {
+                    const el = document.getElementById(`ans_${q.id}`);
+                    this.state.examAnswers[q.id] = el ? el.value : '';
+                });
+
+                document.getElementById('exam-active').classList.add('hidden');
+                document.getElementById('exam-results').classList.remove('hidden');
+                
+                this.renderExamResults();
+                window.scrollTo(0, 0);
+            },
+
+            renderExamResults() {
+                const container = document.getElementById('exam-results-container');
+                container.innerHTML = '';
+
+                this.state.currentExamQuestions.forEach((q, index) => {
+                    const userAnswer = this.state.examAnswers[q.id] || "Keine Notizen gemacht.";
+                    let html = `
+                        <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                            <h3 class="text-lg font-bold text-stone-800 mb-4">Aufgabe ${index + 1}: ${q.question}</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-bold text-stone-600 border-b border-stone-200 pb-2 mb-3">Deine Notizen:</h4>
+                                    <div class="bg-stone-50 p-4 rounded border border-stone-200 text-stone-700 whitespace-pre-wrap">${userAnswer}</div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-emerald-700 border-b border-emerald-200 pb-2 mb-3">Musterlösung aus dem Katalog:</h4>
+                                    <div class="bg-emerald-50 p-4 rounded border border-emerald-200 text-emerald-800 whitespace-pre-wrap">${q.solutionText}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += html;
+                });
+            },
+
+            resetExam() {
+                document.getElementById('exam-setup').classList.remove('hidden');
+                document.getElementById('exam-active').classList.add('hidden');
+                document.getElementById('exam-results').classList.add('hidden');
+                this.setView('dashboard');
+            },
+
+
+            // --- Learning Logic (Rest des Kodes) ---
             toggleQuestion(id) {
                 const answerEl = document.getElementById(`answer-${id}`);
                 const chevron = document.getElementById(`chevron-${id}`);
@@ -381,11 +569,8 @@
 
             toggleLearned(id) {
                 const index = this.state.learnedQuestions.indexOf(id);
-                if (index === -1) {
-                    this.state.learnedQuestions.push(id);
-                } else {
-                    this.state.learnedQuestions.splice(index, 1);
-                }
+                if (index === -1) this.state.learnedQuestions.push(id);
+                else this.state.learnedQuestions.splice(index, 1);
                 this.saveState();
                 this.updateQuestionStatusUI(id);
                 this.updateCharts();
@@ -394,7 +579,6 @@
             updateQuestionStatusUI(id) {
                 const btn = document.getElementById(`btn-learn-${id}`);
                 if (!btn) return;
-                
                 if (this.state.learnedQuestions.includes(id)) {
                     btn.classList.remove('bg-stone-200', 'text-stone-700');
                     btn.classList.add('bg-emerald-100', 'text-emerald-700', 'border-emerald-200');
@@ -430,30 +614,20 @@
             // --- Focus Mode Logic ---
             renderFocusCard() {
                 const allQuestions = this.getAllQuestionsFlat();
-                if(allQuestions.length === 0) return; // Fallback falls Liste leer
+                if(allQuestions.length === 0) return; 
                 
                 const q = allQuestions[this.state.currentFocusIndex];
                 
-                const qEl = document.getElementById('focus-question');
-                const aEl = document.getElementById('focus-answer');
-                const cEl = document.getElementById('focus-category');
-                const countEl = document.getElementById('focus-counter');
-                const containerEl = document.getElementById('focus-answer-container');
-                const btnEl = document.getElementById('btn-reveal');
-                const markBtn = document.getElementById('btn-mark-learned');
-
-                qEl.textContent = q.q;
-                aEl.textContent = q.a;
-                
-                // Entfernt führende Nummern aus dem Titel für eine saubere Anzeige, egal wie der Titel heißt
-                cEl.textContent = q.category.replace(/^\d+\.\s*/, ''); 
-                
-                countEl.textContent = `${this.state.currentFocusIndex + 1}/${allQuestions.length}`;
+                document.getElementById('focus-question').textContent = q.q;
+                document.getElementById('focus-answer').textContent = q.a;
+                document.getElementById('focus-category').textContent = q.category.replace(/^\d+\.\s*/, ''); 
+                document.getElementById('focus-counter').textContent = `${this.state.currentFocusIndex + 1}/${allQuestions.length}`;
                 
                 this.state.isFocusAnswerVisible = false;
-                containerEl.classList.add('hidden');
-                btnEl.textContent = "Antwort zeigen";
+                document.getElementById('focus-answer-container').classList.add('hidden');
+                document.getElementById('btn-reveal').textContent = "Antwort zeigen";
                 
+                const markBtn = document.getElementById('btn-mark-learned');
                 if (this.state.learnedQuestions.includes(q.id)) {
                      markBtn.classList.add('opacity-50', 'cursor-not-allowed');
                      markBtn.innerHTML = '✓ Bereits gelernt';
@@ -464,10 +638,9 @@
             },
 
             toggleFocusAnswer() {
+                this.state.isFocusAnswerVisible = !this.state.isFocusAnswerVisible;
                 const containerEl = document.getElementById('focus-answer-container');
                 const btnEl = document.getElementById('btn-reveal');
-                
-                this.state.isFocusAnswerVisible = !this.state.isFocusAnswerVisible;
                 
                 if (this.state.isFocusAnswerVisible) {
                     containerEl.classList.remove('hidden');
@@ -479,8 +652,7 @@
             },
 
             nextFocus() {
-                const total = this.getTotalQuestions();
-                if (this.state.currentFocusIndex < total - 1) {
+                if (this.state.currentFocusIndex < this.getTotalQuestions() - 1) {
                     this.state.currentFocusIndex++;
                     this.renderFocusCard();
                 }
@@ -494,16 +666,13 @@
             },
             
             markCurrentFocusLearned() {
-                const allQuestions = this.getAllQuestionsFlat();
-                const currentId = allQuestions[this.state.currentFocusIndex].id;
-                
+                const currentId = this.getAllQuestionsFlat()[this.state.currentFocusIndex].id;
                 if (!this.state.learnedQuestions.includes(currentId)) {
                     this.toggleLearned(currentId);
                     this.renderFocusCard(); 
                 }
             },
 
-            // --- Rendering ---
             renderCategories() {
                 const container = document.getElementById('categories-container');
                 container.innerHTML = categories.map(cat => `
@@ -539,88 +708,36 @@
 
             // --- Charts ---
             charts: {},
-            
             updateCharts() {
-                // Sichere Label-Generierung unabhängig von der Namensstruktur
                 const labels = categories.map(c => c.title.replace(/^\d+\.\s*/, '').substring(0, 15) + '...');
                 const dataTotal = categories.map(c => c.questions.length);
                 const dataLearned = categories.map(c => c.questions.filter(q => this.state.learnedQuestions.includes(q.id)).length);
-                
                 const totalLearned = this.state.learnedQuestions.length;
                 const totalQuestions = this.getTotalQuestions();
 
-                // Topic Chart (Bar)
                 const ctxTopic = document.getElementById('topicChart').getContext('2d');
                 if (this.charts.topic) this.charts.topic.destroy();
-                
                 this.charts.topic = new Chart(ctxTopic, {
                     type: 'bar',
                     data: {
                         labels: labels,
                         datasets: [
-                            {
-                                label: 'Gelernt',
-                                data: dataLearned,
-                                backgroundColor: '#10b981', 
-                                borderRadius: 4
-                            },
-                            {
-                                label: 'Offen',
-                                data: dataTotal.map((t, i) => t - dataLearned[i]),
-                                backgroundColor: '#e7e5e4', 
-                                borderRadius: 4
-                            }
+                            { label: 'Gelernt', data: dataLearned, backgroundColor: '#10b981', borderRadius: 4 },
+                            { label: 'Offen', data: dataTotal.map((t, i) => t - dataLearned[i]), backgroundColor: '#e7e5e4', borderRadius: 4 }
                         ]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: { stacked: true, grid: { display: false } },
-                            y: { stacked: true, beginAtZero: true, grid: { color: '#f5f5f4' } }
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: { 
-                                callbacks: {
-                                    title: (ctx) => categories[ctx[0].dataIndex].title
-                                }
-                            }
-                        }
-                    }
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, grid: { color: '#f5f5f4' } } }, plugins: { legend: { display: false } } }
                 });
 
-                // Overall Chart (Doughnut)
                 const ctxOverall = document.getElementById('overallChart').getContext('2d');
                 if (this.charts.overall) this.charts.overall.destroy();
-                
                 this.charts.overall = new Chart(ctxOverall, {
                     type: 'doughnut',
                     data: {
                         labels: ['Gelernt', 'Noch offen'],
-                        datasets: [{
-                            data: [totalLearned, totalQuestions - totalLearned],
-                            backgroundColor: ['#10b981', '#e7e5e4'],
-                            borderWidth: 0,
-                            hoverOffset: 4
-                        }]
+                        datasets: [{ data: [totalLearned, totalQuestions - totalLearned], backgroundColor: ['#10b981', '#e7e5e4'], borderWidth: 0 }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
-                            tooltip: {
-                                callbacks: {
-                                    label: (ctx) => {
-                                        let percentage = totalQuestions > 0 ? Math.round(ctx.raw/totalQuestions*100) : 0;
-                                        return ` ${ctx.label}: ${ctx.raw} Fragen (${percentage}%)`;
-                                    }
-                                }
-                            }
-                        },
-                        cutout: '70%'
-                    },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom' } } },
                     plugins: [{
                         id: 'textCenter',
                         beforeDraw: function(chart) {
@@ -630,10 +747,8 @@
                             ctx.font = "bold " + fontSize + "em sans-serif";
                             ctx.textBaseline = "middle";
                             ctx.fillStyle = "#1c1917";
-                            
                             var percentageStr = totalQuestions > 0 ? Math.round((totalLearned/totalQuestions)*100) + "%" : "0%";
-                            var textX = Math.round((width - ctx.measureText(percentageStr).width) / 2),
-                                textY = height / 2;
+                            var textX = Math.round((width - ctx.measureText(percentageStr).width) / 2), textY = height / 2;
                             ctx.fillText(percentageStr, textX, textY);
                             ctx.save();
                         }
