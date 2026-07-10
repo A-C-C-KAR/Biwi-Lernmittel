@@ -28,6 +28,26 @@
                 this.renderCategories();
                 this.updateCharts();
                 this.updateUI();
+                this.setupKeyboardShortcuts();
+            },
+
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    if (this.state.view === 'focus' && !this.state.examActive) {
+                        // Ignoriere Events, wenn der Nutzer auf einem interaktiven Element ist
+                        const activeTag = document.activeElement.tagName;
+                        if (['INPUT', 'TEXTAREA', 'BUTTON', 'A', 'SELECT'].includes(activeTag)) return;
+
+                        if (e.key === 'ArrowRight') {
+                            this.nextFocus();
+                        } else if (e.key === 'ArrowLeft') {
+                            this.prevFocus();
+                        } else if (e.key === ' ' || e.key === 'Enter') {
+                            e.preventDefault();
+                            this.toggleFocusAnswer();
+                        }
+                    }
+                });
             },
 
             setView(viewName) {

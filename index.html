@@ -78,18 +78,18 @@
                     <button onclick="app.setView('exam')" class="text-stone-600 dark:text-stone-300 hover:text-red-700 dark:hover:text-red-400 px-3 py-2 rounded-md text-sm font-bold transition-colors border border-transparent hover:border-red-200" id="nav-exam">Klausur-Modus</button>
 
                     <div class="border-l border-stone-200 dark:border-stone-700 h-6 mx-2"></div>
-                    <button onclick="app.toggleDarkMode()" class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100 p-2 rounded-full focus:outline-none transition-colors" aria-label="Dark Mode wechseln">
+                    <button onclick="app.toggleDarkMode()" class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 transition-colors" aria-label="Dark Mode wechseln">
                         <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
                 </div>
                 <!-- Mobile menu button -->
                 <div class="flex items-center md:hidden space-x-2">
-                    <button onclick="app.toggleDarkMode()" class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100 p-2 rounded-full focus:outline-none transition-colors" aria-label="Dark Mode wechseln">
+                    <button onclick="app.toggleDarkMode()" class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 transition-colors" aria-label="Dark Mode wechseln">
                         <svg id="icon-sun-mobile" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         <svg id="icon-moon-mobile" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
-                    <button onclick="app.toggleMobileMenu()" class="text-stone-600 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 focus:outline-none p-2" aria-label="Menü öffnen">
+                    <button onclick="app.toggleMobileMenu()" class="text-stone-600 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-md p-2" aria-label="Menü öffnen">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -150,7 +150,7 @@
                     <h3 class="font-bold text-emerald-800 dark:text-emerald-400 transition-colors">App installieren</h3>
                     <p class="text-sm text-emerald-700 dark:text-emerald-300 transition-colors">Du kannst dir diesen Trainer als App auf den Homescreen ziehen, um offline zu lernen! Tippe dazu im Browser-Menü auf "Zum Startbildschirm hinzufügen" (Android) oder auf "Teilen" > "Zum Home-Bildschirm" (iOS).</p>
                 </div>
-                <button onclick="this.parentElement.style.display='none'" class="text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-200 ml-auto focus:outline-none transition-colors" aria-label="Hinweis schließen">
+                <button onclick="this.parentElement.style.display='none'" class="text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-200 ml-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-md transition-colors" aria-label="Hinweis schließen">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
@@ -236,9 +236,9 @@
                         </div>
                     </div>
                     <div class="bg-stone-50 dark:bg-stone-800/80 p-4 border-t border-stone-100 dark:border-stone-700 flex justify-between items-center transition-colors">
-                        <button onclick="app.prevFocus()" class="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-100 px-4 py-2 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors">← Zurück</button>
-                        <button onclick="app.toggleFocusAnswer()" id="btn-reveal" class="bg-white dark:bg-stone-800 border border-emerald-600 dark:border-emerald-500 text-emerald-700 dark:text-emerald-400 px-6 py-2 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 font-medium transition-colors shadow-sm">Antwort zeigen</button>
-                        <button onclick="app.nextFocus()" class="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-100 px-4 py-2 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors">Weiter →</button>
+                        <button onclick="app.prevFocus()" title="Tastenkürzel: Linkspfeil" aria-keyshortcuts="ArrowLeft" class="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-100 px-4 py-2 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors">← Zurück</button>
+                        <button onclick="app.toggleFocusAnswer()" id="btn-reveal" title="Tastenkürzel: Leertaste" aria-keyshortcuts="Space" class="bg-white dark:bg-stone-800 border border-emerald-600 dark:border-emerald-500 text-emerald-700 dark:text-emerald-400 px-6 py-2 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 font-medium transition-colors shadow-sm">Antwort zeigen</button>
+                        <button onclick="app.nextFocus()" title="Tastenkürzel: Rechtspfeil" aria-keyshortcuts="ArrowRight" class="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-100 px-4 py-2 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors">Weiter →</button>
                     </div>
                 </div>
                 <div class="flex justify-center mt-8 space-x-4">
