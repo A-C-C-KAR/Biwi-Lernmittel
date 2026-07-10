@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#047857"/>
+  <g transform="translate(10, 10) scale(0.9)">
+    <path fill="#fdfbf7" d="M30 40h140v120H30z"/>
+    <path fill="#e8e6e1" d="M30 40h10v120H30z"/>
+    <!-- Eule vereinfacht -->
+    <path fill="#556b2f" d="M100 60c-15 0-25 10-25 25v30c0 10 10 15 25 15s25-5 25-15V85c0-15-10-25-25-25zm-10 15a5 5 0 110 10 5 5 0 010-10zm20 0a5 5 0 110 10 5 5 0 010-10zm-10 15l-5 10h10l-5-10z"/>
+  </g>
+</svg>
