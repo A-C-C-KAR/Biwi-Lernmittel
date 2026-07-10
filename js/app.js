@@ -1,4 +1,14 @@
         const app = {
+            escapeHtml(text) {
+                if (!text) return text;
+                return text.toString()
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            },
+
             state: {
                 view: 'dashboard',
                 learnedQuestions: JSON.parse(localStorage.getItem('paed_learned') || '[]'),
@@ -248,6 +258,7 @@
 
                 this.state.currentExamQuestions.forEach((q, index) => {
                     const userAnswer = this.state.examAnswers[q.id] || "Keine Notizen gemacht.";
+                    const safeUserAnswer = this.escapeHtml(userAnswer);
                     let html = `
                         <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
                             <h3 class="text-lg font-bold text-stone-800 mb-4">Aufgabe ${index + 1}: ${q.question}</h3>
@@ -255,7 +266,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <h4 class="font-bold text-stone-600 border-b border-stone-200 pb-2 mb-3">Deine Notizen:</h4>
-                                    <div class="bg-stone-50 p-4 rounded border border-stone-200 text-stone-700 whitespace-pre-wrap">${userAnswer}</div>
+                                    <div class="bg-stone-50 p-4 rounded border border-stone-200 text-stone-700 whitespace-pre-wrap">${safeUserAnswer}</div>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-emerald-700 border-b border-emerald-200 pb-2 mb-3">Musterlösung aus dem Katalog:</h4>
