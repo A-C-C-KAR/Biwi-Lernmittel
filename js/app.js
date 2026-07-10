@@ -9,6 +9,7 @@
                 // Klausur State
                 examActive: false,
                 examTimerSeconds: 0,
+                examInitialSeconds: 0,
                 examInterval: null,
                 currentExamQuestions: [],
                 examAnswers: {}
@@ -139,6 +140,7 @@
                 if (questionCount > maxQuestions) questionCount = maxQuestions;
 
                 this.state.examTimerSeconds = minutes * 60;
+                this.state.examInitialSeconds = minutes * 60;
                 this.state.examActive = true;
                 this.state.examAnswers = {};
 
@@ -273,8 +275,17 @@
                 this.setView('dashboard');
             },
 
-            exportExamToClipboard() {
+            exportExamAsTextFile() {
+                const initialMins = Math.floor(this.state.examInitialSeconds / 60);
+                const usedSecondsTotal = this.state.examInitialSeconds - this.state.examTimerSeconds;
+                const usedMins = Math.floor(usedSecondsTotal / 60);
+                const usedSecs = usedSecondsTotal % 60;
+                const usedTimeStr = `${usedMins.toString().padStart(2, '0')}:${usedSecs.toString().padStart(2, '0')}`;
+
                 let exportText = "KLAUSUR - ALLGEMEINE PÄDAGOGIK\n";
+                exportText += "===================================\n";
+                exportText += `Eingestellte Zeit: ${initialMins} Minuten\n`;
+                exportText += `Verbrauchte Zeit:  ${usedTimeStr} Minuten\n`;
                 exportText += "===================================\n\n";
 
                 this.state.currentExamQuestions.forEach((q, index) => {
@@ -288,22 +299,20 @@
                 exportText += "===================================\n";
                 exportText += "Generiert mit Klausurtrainer Pädagogik";
 
-                navigator.clipboard.writeText(exportText).then(() => {
-                    const btn = document.getElementById('btn-export-exam');
-                    const originalText = btn.innerHTML;
-                    btn.innerHTML = '<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Kopiert!';
-                    btn.classList.replace('bg-blue-600', 'bg-emerald-600');
-                    btn.classList.replace('hover:bg-blue-700', 'hover:bg-emerald-700');
+                const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'Klausur_Paedagogik.txt';
+                document.body.appendChild(a);
+                a.click();
 
-                    setTimeout(() => {
-                        btn.innerHTML = originalText;
-                        btn.classList.replace('bg-emerald-600', 'bg-blue-600');
-                        btn.classList.replace('hover:bg-emerald-700', 'hover:bg-blue-700');
-                    }, 3000);
-                }).catch(err => {
-                    console.error('Fehler beim Kopieren: ', err);
-                    alert("Kopieren in die Zwischenablage ist fehlgeschlagen. Bitte versuche es manuell.");
-                });
+                // Cleanup
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
             },
 
             // --- Learning Logic (Rest des Kodes) ---
