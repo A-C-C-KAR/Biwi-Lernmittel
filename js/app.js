@@ -160,7 +160,7 @@
                 document.getElementById('exam-results').classList.add('hidden');
                 document.getElementById('exam-active').classList.remove('hidden');
 
-                document.getElementById('nav-links').classList.add('pointer-events-none', 'opacity-30');
+                document.getElementById('nav-links-desktop').classList.add('pointer-events-none', 'opacity-30');
                 document.getElementById('exam-timer-bar').classList.remove('hidden');
 
                 this.renderExamQuestions();
@@ -219,7 +219,7 @@
                 clearInterval(this.state.examInterval);
                 this.state.examActive = false;
 
-                document.getElementById('nav-links').classList.remove('pointer-events-none', 'opacity-30');
+                document.getElementById('nav-links-desktop').classList.remove('pointer-events-none', 'opacity-30');
                 document.getElementById('exam-timer-bar').classList.add('hidden');
 
                 if(aborted) {
