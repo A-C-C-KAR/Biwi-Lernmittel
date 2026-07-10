@@ -64,32 +64,12 @@
                 <div class="flex items-center">
                     <span class="text-xl font-bold text-emerald-800 tracking-tight">Pädagogik<span class="font-light text-stone-600">Trainer</span></span>
                 </div>
-                <!-- Desktop menu -->
-                <div class="hidden md:flex items-center space-x-4" id="nav-links-desktop">
+                <div class="flex items-center space-x-2 md:space-x-4" id="nav-links">
                     <button onclick="app.setView('dashboard')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-dashboard">Dashboard</button>
-                    <button onclick="app.setView('updates')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-updates">Updates</button>
                     <button onclick="app.setView('learn')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-learn">Fragenkatalog</button>
                     <button onclick="app.setView('focus')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-focus">Fokus-Modus</button>
                     <button onclick="app.setView('exam')" class="text-stone-600 hover:text-red-700 px-3 py-2 rounded-md text-sm font-bold transition-colors border border-transparent hover:border-red-200" id="nav-exam">Klausur-Modus</button>
                 </div>
-                <!-- Mobile menu button -->
-                <div class="flex items-center md:hidden">
-                    <button onclick="app.toggleMobileMenu()" class="text-stone-600 hover:text-emerald-700 focus:outline-none p-2" aria-label="Menü öffnen">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile menu panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-stone-100 shadow-inner">
-            <div class="px-2 pt-2 pb-3 space-y-1 flex flex-col" id="nav-links-mobile">
-                <button onclick="app.setView('dashboard'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-emerald-700 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-dashboard-mobile">Dashboard</button>
-                <button onclick="app.setView('updates'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-emerald-700 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-updates-mobile">Updates</button>
-                <button onclick="app.setView('learn'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-emerald-700 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-learn-mobile">Fragenkatalog</button>
-                <button onclick="app.setView('focus'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-emerald-700 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-focus-mobile">Fokus-Modus</button>
-                <button onclick="app.setView('exam'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-red-700 px-3 py-2 rounded-md text-base font-bold transition-colors w-full" id="nav-exam-mobile">Klausur-Modus</button>
             </div>
         </div>
         <div id="exam-timer-bar" class="hidden bg-red-600 text-white text-center py-2 font-bold shadow-md w-full z-40 transition-all">
@@ -99,33 +79,6 @@
 
     <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
         
-        <!-- Updates View -->
-        <div id="view-updates" class="hidden space-y-8 animate-fade-in">
-            <div class="bg-amber-50 border-l-4 border-amber-500 p-6 rounded-r-xl shadow-sm mb-8">
-                <h2 class="text-xl font-bold text-amber-800 mb-2 flex items-center">
-                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Beta-Status
-                </h2>
-                <p class="text-amber-700">Die Seite befindet sich noch im Beta-Status, daher sind Fehler möglich. Bitte wende dich an deine Tutor:in, wenn dir Fehler auffallen.</p>
-            </div>
-
-            <h1 class="text-3xl font-bold text-stone-800 mb-6">Updates & Fixes</h1>
-
-            <div class="space-y-6">
-                <!-- Example Update Item -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 flex flex-col md:flex-row md:items-start gap-4">
-                    <div class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-bold whitespace-nowrap w-max">
-                        Neu
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-stone-800 mb-2">Updates-Tab hinzugefügt</h3>
-                        <p class="text-stone-600">Ein neuer Bereich wurde erstellt, um über aktuelle Änderungen und Fehlerbehebungen auf der Website zu informieren. Außerdem wurde eine mobile Navigation hinzugefügt und weitere allgemeine Verbesserungen vorgenommen.</p>
-                        <p class="text-sm text-stone-400 mt-2">Zuletzt aktualisiert: Heute</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div id="view-dashboard" class="space-y-8 animate-fade-in">
             <div class="bg-white rounded-xl p-8 shadow-sm border border-stone-100">
                 <h1 class="text-3xl font-bold text-stone-800 mb-4">Willkommen zur Klausurvorbereitung</h1>
@@ -147,10 +100,6 @@
                         <span>📊</span>
                         <span id="total-progress-text">0/0 Fragen gemeistert</span>
                     </div>
-                    <button onclick="app.resetProgress()" class="text-stone-500 hover:text-red-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors ml-auto flex items-center" title="Lernfortschritt zurücksetzen">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                        Fortschritt zurücksetzen
-                    </button>
                 </div>
             </div>
 
@@ -293,11 +242,6 @@
             <p>&copy; 2025 Klausurtrainer Pädagogik. Basierend auf den Vorlesungsunterlagen von R. Bolle.</p>
         </div>
     </footer>
-
-    <!-- Scroll to Top Button -->
-    <button id="btn-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-8 right-8 bg-emerald-600 text-white p-3 rounded-full shadow-lg hover:bg-emerald-700 transition-all opacity-0 pointer-events-none translate-y-4" aria-label="Nach oben scrollen">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
-    </button>
 
     <script>
         // =========================================================================
@@ -450,11 +394,8 @@
 
                 this.state.view = viewName;
                 
-                ['dashboard', 'updates', 'learn', 'focus', 'exam'].forEach(v => {
-                    // Update Desktop nav
+                ['dashboard', 'learn', 'focus', 'exam'].forEach(v => {
                     const el = document.getElementById(`nav-${v}`);
-                    // Update Mobile nav
-                    const elMobile = document.getElementById(`nav-${v}-mobile`);
                     const container = document.getElementById(`view-${v}`);
                     
                     if (v === viewName) {
@@ -462,11 +403,6 @@
                             el.classList.add('bg-stone-100');
                             if(v === 'exam') el.classList.add('text-red-700', 'bg-red-50');
                             else el.classList.add('text-emerald-700', 'bg-emerald-50');
-                        }
-                        if(elMobile) {
-                            elMobile.classList.add('bg-stone-50');
-                            if(v === 'exam') elMobile.classList.add('text-red-700');
-                            else elMobile.classList.add('text-emerald-700');
                         }
                         if(container) container.classList.remove('hidden');
                         
@@ -477,36 +413,9 @@
                             el.classList.remove('bg-stone-100', 'text-emerald-700', 'bg-emerald-50', 'text-red-700', 'bg-red-50');
                             el.classList.add('text-stone-600');
                         }
-                        if(elMobile) {
-                            elMobile.classList.remove('bg-stone-50', 'text-emerald-700', 'text-red-700');
-                            elMobile.classList.add('text-stone-600');
-                        }
                         if(container) container.classList.add('hidden');
                     }
                 });
-
-                // Scroll to top when changing view
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            },
-
-            toggleMobileMenu(forceClose = false) {
-                const menu = document.getElementById('mobile-menu');
-                if (forceClose || !menu.classList.contains('hidden')) {
-                    menu.classList.add('hidden');
-                } else {
-                    menu.classList.remove('hidden');
-                }
-            },
-
-            resetProgress() {
-                if(confirm("Möchtest du deinen gesamten Lernfortschritt wirklich zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.")) {
-                    this.state.learnedQuestions = [];
-                    this.saveState();
-                    this.updateCharts();
-                    this.updateUI();
-                    this.renderCategories();
-                    alert("Lernfortschritt erfolgreich zurückgesetzt.");
-                }
             },
 
             // --- Klausur Logik ---
@@ -854,21 +763,7 @@
         };
 
         // Start App
-        document.addEventListener('DOMContentLoaded', () => {
-            app.init();
-
-            // Scroll to top button logic
-            const btnScrollTop = document.getElementById('btn-scroll-top');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    btnScrollTop.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-                    btnScrollTop.classList.add('opacity-100');
-                } else {
-                    btnScrollTop.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
-                    btnScrollTop.classList.remove('opacity-100');
-                }
-            });
-        });
+        document.addEventListener('DOMContentLoaded', () => app.init());
     </script>
 </body>
 </html>
