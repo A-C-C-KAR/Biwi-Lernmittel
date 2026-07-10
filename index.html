@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klausurtrainer Allgemeine Pädagogik</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="theme-color" content="#047857">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -28,7 +32,8 @@
     </script>
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #fdfbf7; color: #1f2937; }
+        body { font-family: 'Inter', sans-serif; background-color: #fdfbf7; color: #1f2937; transition: background-color 0.3s, color 0.3s; }
+        .dark body { background-color: #1c1917; color: #e7e5e4; }
         h1, h2, h3 { font-family: 'Merriweather', serif; }
         
         .chart-container {
@@ -56,25 +61,35 @@
         ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col dark:bg-stone-900 dark:text-stone-200 transition-colors duration-300">
 
-    <nav class="bg-white border-b border-stone-200 shadow-sm sticky top-0 z-50">
+    <nav class="bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700 shadow-sm sticky top-0 z-50 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <span class="text-xl font-bold text-emerald-800 tracking-tight">Pädagogik<span class="font-light text-stone-600">Trainer</span></span>
+                    <span class="text-xl font-bold text-emerald-800 dark:text-emerald-400 tracking-tight">Pädagogik<span class="font-light text-stone-600 dark:text-stone-300">Trainer</span></span>
                 </div>
                 <!-- Desktop menu -->
                 <div class="hidden md:flex items-center space-x-4" id="nav-links-desktop">
-                    <button onclick="app.setView('dashboard')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-dashboard">Dashboard</button>
-                    <button onclick="app.setView('updates')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-updates">Updates</button>
-                    <button onclick="app.setView('learn')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-learn">Fragenkatalog</button>
-                    <button onclick="app.setView('focus')" class="text-stone-600 hover:text-emerald-700 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-focus">Fokus-Modus</button>
-                    <button onclick="app.setView('exam')" class="text-stone-600 hover:text-red-700 px-3 py-2 rounded-md text-sm font-bold transition-colors border border-transparent hover:border-red-200" id="nav-exam">Klausur-Modus</button>
+                    <button onclick="app.setView('dashboard')" class="text-stone-600 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-dashboard">Dashboard</button>
+                    <button onclick="app.setView('updates')" class="text-stone-600 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-updates">Updates</button>
+                    <button onclick="app.setView('learn')" class="text-stone-600 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-learn">Fragenkatalog</button>
+                    <button onclick="app.setView('focus')" class="text-stone-600 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-sm font-medium transition-colors" id="nav-focus">Fokus-Modus</button>
+                    <button onclick="app.setView('exam')" class="text-stone-600 dark:text-stone-300 hover:text-red-700 dark:hover:text-red-400 px-3 py-2 rounded-md text-sm font-bold transition-colors border border-transparent hover:border-red-200" id="nav-exam">Klausur-Modus</button>
+
+                    <div class="border-l border-stone-200 dark:border-stone-700 h-6 mx-2"></div>
+                    <button onclick="app.toggleDarkMode()" class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100 p-2 rounded-full focus:outline-none transition-colors" aria-label="Dark Mode wechseln">
+                        <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
                 </div>
                 <!-- Mobile menu button -->
-                <div class="flex items-center md:hidden">
-                    <button onclick="app.toggleMobileMenu()" class="text-stone-600 hover:text-emerald-700 focus:outline-none p-2" aria-label="Menü öffnen">
+                <div class="flex items-center md:hidden space-x-2">
+                    <button onclick="app.toggleDarkMode()" class="text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100 p-2 rounded-full focus:outline-none transition-colors" aria-label="Dark Mode wechseln">
+                        <svg id="icon-sun-mobile" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg id="icon-moon-mobile" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <button onclick="app.toggleMobileMenu()" class="text-stone-600 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 focus:outline-none p-2" aria-label="Menü öffnen">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -83,13 +98,13 @@
             </div>
         </div>
         <!-- Mobile menu panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-stone-100 shadow-inner">
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-stone-800 border-t border-stone-100 dark:border-stone-700 shadow-inner">
             <div class="px-2 pt-2 pb-3 space-y-1 flex flex-col" id="nav-links-mobile">
-                <button onclick="app.setView('dashboard'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-emerald-700 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-dashboard-mobile">Dashboard</button>
-                <button onclick="app.setView('updates'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-emerald-700 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-updates-mobile">Updates</button>
-                <button onclick="app.setView('learn'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-emerald-700 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-learn-mobile">Fragenkatalog</button>
-                <button onclick="app.setView('focus'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-emerald-700 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-focus-mobile">Fokus-Modus</button>
-                <button onclick="app.setView('exam'); app.toggleMobileMenu(true)" class="text-left text-stone-600 hover:bg-stone-50 hover:text-red-700 px-3 py-2 rounded-md text-base font-bold transition-colors w-full" id="nav-exam-mobile">Klausur-Modus</button>
+                <button onclick="app.setView('dashboard'); app.toggleMobileMenu(true)" class="text-left text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-700 hover:text-emerald-700 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-dashboard-mobile">Dashboard</button>
+                <button onclick="app.setView('updates'); app.toggleMobileMenu(true)" class="text-left text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-700 hover:text-emerald-700 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-updates-mobile">Updates</button>
+                <button onclick="app.setView('learn'); app.toggleMobileMenu(true)" class="text-left text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-700 hover:text-emerald-700 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-learn-mobile">Fragenkatalog</button>
+                <button onclick="app.setView('focus'); app.toggleMobileMenu(true)" class="text-left text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-700 hover:text-emerald-700 dark:hover:text-emerald-400 px-3 py-2 rounded-md text-base font-medium transition-colors w-full" id="nav-focus-mobile">Fokus-Modus</button>
+                <button onclick="app.setView('exam'); app.toggleMobileMenu(true)" class="text-left text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-700 hover:text-red-700 dark:hover:text-red-400 px-3 py-2 rounded-md text-base font-bold transition-colors w-full" id="nav-exam-mobile">Klausur-Modus</button>
             </div>
         </div>
         <div id="exam-timer-bar" class="hidden bg-red-600 text-white text-center py-2 font-bold shadow-md w-full z-40 transition-all">
@@ -101,53 +116,66 @@
         
         <!-- Updates View -->
         <div id="view-updates" class="hidden space-y-8 animate-fade-in">
-            <div class="bg-amber-50 border-l-4 border-amber-500 p-6 rounded-r-xl shadow-sm mb-8">
-                <h2 class="text-xl font-bold text-amber-800 mb-2 flex items-center">
+            <div class="bg-amber-50 dark:bg-amber-900/30 border-l-4 border-amber-500 p-6 rounded-r-xl shadow-sm mb-8 transition-colors">
+                <h2 class="text-xl font-bold text-amber-800 dark:text-amber-400 mb-2 flex items-center">
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     Beta-Status
                 </h2>
-                <p class="text-amber-700">Die Seite befindet sich noch im Beta-Status, daher sind Fehler möglich. Bitte wende dich an deine Tutor:in, wenn dir Fehler auffallen.</p>
+                <p class="text-amber-700 dark:text-amber-200">Die Seite befindet sich noch im Beta-Status, daher sind Fehler möglich. Bitte wende dich an deine Tutor:in, wenn dir Fehler auffallen.</p>
             </div>
 
-            <h1 class="text-3xl font-bold text-stone-800 mb-6">Updates & Fixes</h1>
+            <h1 class="text-3xl font-bold text-stone-800 dark:text-stone-100 mb-6 transition-colors">Updates & Fixes</h1>
 
             <div class="space-y-6">
                 <!-- Example Update Item -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 flex flex-col md:flex-row md:items-start gap-4">
-                    <div class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-bold whitespace-nowrap w-max">
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-sm border border-stone-100 dark:border-stone-700 flex flex-col md:flex-row md:items-start gap-4 transition-colors">
+                    <div class="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 px-3 py-1 rounded-full text-sm font-bold whitespace-nowrap w-max transition-colors">
                         Neu
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold text-stone-800 mb-2">Updates-Tab hinzugefügt</h3>
-                        <p class="text-stone-600">Ein neuer Bereich wurde erstellt, um über aktuelle Änderungen und Fehlerbehebungen auf der Website zu informieren. Außerdem wurde eine mobile Navigation hinzugefügt und weitere allgemeine Verbesserungen vorgenommen.</p>
-                        <p class="text-sm text-stone-400 mt-2">Zuletzt aktualisiert: Heute</p>
+                        <h3 class="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-2 transition-colors">Updates-Tab hinzugefügt</h3>
+                        <p class="text-stone-600 dark:text-stone-300 transition-colors">Ein neuer Bereich wurde erstellt, um über aktuelle Änderungen und Fehlerbehebungen auf der Website zu informieren. Außerdem wurde eine mobile Navigation hinzugefügt und weitere allgemeine Verbesserungen vorgenommen.</p>
+                        <p class="text-sm text-stone-400 dark:text-stone-500 mt-2 transition-colors">Zuletzt aktualisiert: Heute</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="view-dashboard" class="space-y-8 animate-fade-in">
-            <div class="bg-white rounded-xl p-8 shadow-sm border border-stone-100">
-                <h1 class="text-3xl font-bold text-stone-800 mb-4">Willkommen zur Klausurvorbereitung</h1>
-                <p class="text-lg text-stone-600 leading-relaxed max-w-3xl">
+            <div class="bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl flex items-start gap-4 transition-colors">
+                <div class="bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-300 p-2 rounded-lg flex-shrink-0 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-emerald-800 dark:text-emerald-400 transition-colors">App installieren</h3>
+                    <p class="text-sm text-emerald-700 dark:text-emerald-300 transition-colors">Du kannst dir diesen Trainer als App auf den Homescreen ziehen, um offline zu lernen! Tippe dazu im Browser-Menü auf "Zum Startbildschirm hinzufügen" (Android) oder auf "Teilen" > "Zum Home-Bildschirm" (iOS).</p>
+                </div>
+                <button onclick="this.parentElement.style.display='none'" class="text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-200 ml-auto focus:outline-none transition-colors" aria-label="Hinweis schließen">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="bg-white dark:bg-stone-800 rounded-xl p-8 shadow-sm border border-stone-100 dark:border-stone-700 transition-colors">
+                <h1 class="text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4 transition-colors">Willkommen zur Klausurvorbereitung</h1>
+                <p class="text-lg text-stone-600 dark:text-stone-300 leading-relaxed max-w-3xl transition-colors">
                     Dieser interaktive Trainer basiert auf Texten zur Allgemeinen Pädagogik. Er bespricht klassische Fragen.
-                    Dieses Tool <b>kann</b> nützlich sein um dein Wissen über klassische Theorien (Rousseau, Herbart, Humboldt) und moderne Bildungskritik systematisch zu überprüfen und zu vertiefen.
-                    Wenn du die Aufgaben bearbeitest, versuche die Theorien der jeweiligen Autoren immer <b>ganz</b> darzustellen!
+                    Dieses Tool <b class="dark:text-stone-100">kann</b> nützlich sein um dein Wissen über klassische Theorien (Rousseau, Herbart, Humboldt) und moderne Bildungskritik systematisch zu überprüfen und zu vertiefen.
+                    Wenn du die Aufgaben bearbeitest, versuche die Theorien der jeweiligen Autoren immer <b class="dark:text-stone-100">ganz</b> darzustellen!
                     Die Hinweise sind nur eine Hilfestellung.
                 </p>
                 <div class="mt-6 flex flex-wrap gap-4">
-                    <button onclick="app.setView('learn')" class="bg-emerald-700 text-white px-6 py-3 rounded-lg hover:bg-emerald-800 shadow-md transition-all font-medium">
+                    <button onclick="app.setView('learn')" class="bg-emerald-700 dark:bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-800 dark:hover:bg-emerald-700 shadow-md transition-all font-medium">
                         Jetzt lernen starten
                     </button>
-                    <button onclick="app.setView('exam')" class="bg-red-700 text-white px-6 py-3 rounded-lg hover:bg-red-800 shadow-md transition-all font-medium flex items-center">
+                    <button onclick="app.setView('exam')" class="bg-red-700 dark:bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-800 dark:hover:bg-red-700 shadow-md transition-all font-medium flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         Test-Klausur schreiben
                     </button>
-                    <div class="flex items-center space-x-2 text-stone-500 text-sm bg-stone-50 px-4 py-2 rounded-lg border border-stone-100">
+                    <div class="flex items-center space-x-2 text-stone-500 dark:text-stone-400 text-sm bg-stone-50 dark:bg-stone-800/50 px-4 py-2 rounded-lg border border-stone-100 dark:border-stone-700 transition-colors">
                         <span>📊</span>
                         <span id="total-progress-text">0/0 Fragen gemeistert</span>
                     </div>
-                    <button onclick="app.resetProgress()" class="text-stone-500 hover:text-red-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors ml-auto flex items-center" title="Lernfortschritt zurücksetzen">
+                    <button onclick="app.resetProgress()" class="text-stone-500 dark:text-stone-400 hover:text-red-600 dark:hover:text-red-400 px-4 py-2 rounded-lg text-sm font-medium transition-colors ml-auto flex items-center" title="Lernfortschritt zurücksetzen">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         Fortschritt zurücksetzen
                     </button>
@@ -155,19 +183,19 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
-                    <h2 class="text-xl font-semibold text-stone-800 mb-6 flex items-center">
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-sm border border-stone-100 dark:border-stone-700 transition-colors">
+                    <h2 class="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-6 flex items-center transition-colors">
                         <span class="w-2 h-6 bg-emerald-500 rounded-full mr-3"></span>
                         Gesamtfortschritt
                     </h2>
                     <div class="chart-container flex justify-center items-center">
                         <canvas id="overallChart"></canvas>
                     </div>
-                    <p class="text-center text-sm text-stone-500 mt-4">Du kannst Fragen im Katalog als "Gelernt" markieren, um deinen Fortschritt hier zu sehen.</p>
+                    <p class="text-center text-sm text-stone-500 dark:text-stone-400 mt-4 transition-colors">Du kannst Fragen im Katalog als "Gelernt" markieren, um deinen Fortschritt hier zu sehen.</p>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
-                    <h2 class="text-xl font-semibold text-stone-800 mb-6 flex items-center">
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-xl shadow-sm border border-stone-100 dark:border-stone-700 transition-colors">
+                    <h2 class="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-6 flex items-center transition-colors">
                         <span class="w-2 h-6 bg-stone-500 rounded-full mr-3"></span>
                         Fortschritt nach Themen
                     </h2>
@@ -181,13 +209,13 @@
         <div id="view-learn" class="hidden space-y-6">
             <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                 <div>
-                    <h2 class="text-2xl font-bold text-stone-800">Fragenkatalog</h2>
-                    <p class="text-stone-500"><span id="lbl-total-q">0</span> Fragen sortiert nach <span id="lbl-total-c">0</span> Themenbereichen</p>
+                    <h2 class="text-2xl font-bold text-stone-800 dark:text-stone-100 transition-colors">Fragenkatalog</h2>
+                    <p class="text-stone-500 dark:text-stone-400 transition-colors"><span id="lbl-total-q">0</span> Fragen sortiert nach <span id="lbl-total-c">0</span> Themenbereichen</p>
                 </div>
                 <div class="flex space-x-3 mt-4 md:mt-0">
-                    <button onclick="app.expandAll()" class="text-sm text-stone-600 hover:text-emerald-700 font-medium">Alle öffnen</button>
-                    <span class="text-stone-300">|</span>
-                    <button onclick="app.collapseAll()" class="text-sm text-stone-600 hover:text-emerald-700 font-medium">Alle schließen</button>
+                    <button onclick="app.expandAll()" class="text-sm text-stone-600 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium transition-colors">Alle öffnen</button>
+                    <span class="text-stone-300 dark:text-stone-600">|</span>
+                    <button onclick="app.collapseAll()" class="text-sm text-stone-600 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 font-medium transition-colors">Alle schließen</button>
                 </div>
             </div>
             <div id="categories-container" class="space-y-6"></div>
@@ -196,25 +224,25 @@
         <div id="view-focus" class="hidden h-full flex flex-col items-center justify-center py-12">
             <div class="w-full max-w-2xl">
                 <div class="flex justify-between items-center mb-4 px-2">
-                    <span id="focus-category" class="text-xs font-bold tracking-wider uppercase text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Thema</span>
-                    <span id="focus-counter" class="text-stone-400 font-mono text-sm">1/0</span>
+                    <span id="focus-category" class="text-xs font-bold tracking-wider uppercase text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded transition-colors">Thema</span>
+                    <span id="focus-counter" class="text-stone-400 dark:text-stone-500 font-mono text-sm transition-colors">1/0</span>
                 </div>
-                <div class="bg-white rounded-2xl shadow-xl border border-stone-100 overflow-hidden relative min-h-[400px] flex flex-col">
+                <div class="bg-white dark:bg-stone-800 rounded-2xl shadow-xl border border-stone-100 dark:border-stone-700 overflow-hidden relative min-h-[400px] flex flex-col transition-colors">
                     <div class="p-8 flex-grow flex flex-col justify-center items-center text-center">
-                        <h3 id="focus-question" class="text-2xl font-serif text-stone-800 mb-6 leading-relaxed">Frage wird geladen...</h3>
-                        <div id="focus-answer-container" class="hidden w-full bg-stone-50 p-6 rounded-xl border border-stone-100 text-left animate-fade-in mt-4">
-                            <h4 class="text-sm font-bold text-stone-500 mb-2 uppercase">Lösungshinweis:</h4>
-                            <p id="focus-answer" class="text-stone-700 leading-relaxed"></p>
+                        <h3 id="focus-question" class="text-2xl font-serif text-stone-800 dark:text-stone-100 mb-6 leading-relaxed transition-colors">Frage wird geladen...</h3>
+                        <div id="focus-answer-container" class="hidden w-full bg-stone-50 dark:bg-stone-700/50 p-6 rounded-xl border border-stone-100 dark:border-stone-600 text-left animate-fade-in mt-4 transition-colors">
+                            <h4 class="text-sm font-bold text-stone-500 dark:text-stone-400 mb-2 uppercase transition-colors">Lösungshinweis:</h4>
+                            <p id="focus-answer" class="text-stone-700 dark:text-stone-300 leading-relaxed transition-colors"></p>
                         </div>
                     </div>
-                    <div class="bg-stone-50 p-4 border-t border-stone-100 flex justify-between items-center">
-                        <button onclick="app.prevFocus()" class="text-stone-500 hover:text-stone-800 px-4 py-2 hover:bg-stone-200 rounded-lg transition-colors">← Zurück</button>
-                        <button onclick="app.toggleFocusAnswer()" id="btn-reveal" class="bg-white border border-emerald-600 text-emerald-700 px-6 py-2 rounded-lg hover:bg-emerald-50 font-medium transition-colors shadow-sm">Antwort zeigen</button>
-                        <button onclick="app.nextFocus()" class="text-stone-500 hover:text-stone-800 px-4 py-2 hover:bg-stone-200 rounded-lg transition-colors">Weiter →</button>
+                    <div class="bg-stone-50 dark:bg-stone-800/80 p-4 border-t border-stone-100 dark:border-stone-700 flex justify-between items-center transition-colors">
+                        <button onclick="app.prevFocus()" class="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-100 px-4 py-2 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors">← Zurück</button>
+                        <button onclick="app.toggleFocusAnswer()" id="btn-reveal" class="bg-white dark:bg-stone-800 border border-emerald-600 dark:border-emerald-500 text-emerald-700 dark:text-emerald-400 px-6 py-2 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/30 font-medium transition-colors shadow-sm">Antwort zeigen</button>
+                        <button onclick="app.nextFocus()" class="text-stone-500 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-100 px-4 py-2 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors">Weiter →</button>
                     </div>
                 </div>
                 <div class="flex justify-center mt-8 space-x-4">
-                    <button onclick="app.markCurrentFocusLearned()" id="btn-mark-learned" class="bg-emerald-600 text-white px-6 py-3 rounded-full hover:bg-emerald-700 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center">
+                    <button onclick="app.markCurrentFocusLearned()" id="btn-mark-learned" class="bg-emerald-600 dark:bg-emerald-500 text-white px-6 py-3 rounded-full hover:bg-emerald-700 dark:hover:bg-emerald-600 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center">
                         <span>✓ Als gelernt markieren</span>
                     </button>
                 </div>
@@ -223,63 +251,67 @@
 
         <div id="view-exam" class="hidden space-y-6">
             
-            <div id="exam-setup" class="bg-white rounded-xl p-8 shadow-sm border border-stone-100 max-w-2xl mx-auto mt-10">
-                <h2 class="text-3xl font-bold text-stone-800 mb-4">Closed-Book Klausur-Modus (Offene Fragen)</h2>
-                <p class="text-stone-600 mb-6">Teste dein Wissen unter realen Bedingungen. Sobald die Klausur startet, wird die Navigation gesperrt und der Timer läuft.
+            <div id="exam-setup" class="bg-white dark:bg-stone-800 rounded-xl p-8 shadow-sm border border-stone-100 dark:border-stone-700 max-w-2xl mx-auto mt-10 transition-colors">
+                <h2 class="text-3xl font-bold text-stone-800 dark:text-stone-100 mb-4 transition-colors">Closed-Book Klausur-Modus (Offene Fragen)</h2>
+                <p class="text-stone-600 dark:text-stone-300 mb-6 transition-colors">Teste dein Wissen unter realen Bedingungen. Sobald die Klausur startet, wird die Navigation gesperrt und der Timer läuft.
                 Versuche dich an das Schema zu halten: Biographie des Autors > Theorie des Autors > Aufgabe lösen</p>
-                <p class="text-emerald-700 mb-6 font-semibold bg-emerald-50 p-3 rounded border border-emerald-200">
+                <p class="text-emerald-700 dark:text-emerald-300 mb-6 font-semibold bg-emerald-50 dark:bg-emerald-900/30 p-3 rounded border border-emerald-200 dark:border-emerald-800 transition-colors">
                     ℹ️ Die Klausur zieht sich ihre Fragen automatisch aus deinem normalen Fragenkatalog. Jeder Versuch wird zufällig neu zusammengestellt!
                 </p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
-                        <label class="block text-sm font-bold text-stone-700 mb-2" for="exam-time-input">Klausurzeit (Minuten):</label>
-                        <input type="number" id="exam-time-input" value="90" min="5" max="240" class="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-red-500 focus:border-red-500">
+                    <div class="bg-stone-50 dark:bg-stone-800/80 p-4 rounded-lg border border-stone-200 dark:border-stone-700 transition-colors">
+                        <label class="block text-sm font-bold text-stone-700 dark:text-stone-300 mb-2 transition-colors" for="exam-time-input">Klausurzeit (Minuten):</label>
+                        <input type="number" id="exam-time-input" value="90" min="5" max="240" class="w-full px-4 py-2 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-800 dark:text-stone-100 rounded-md focus:ring-red-500 focus:border-red-500 transition-colors">
                     </div>
                     
-                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
-                        <label class="block text-sm font-bold text-stone-700 mb-2" for="exam-question-count">Anzahl der Fragen:</label>
-                        <input type="number" id="exam-question-count" value="3" min="1" max="50" class="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-red-500 focus:border-red-500">
-                        <p class="text-xs text-stone-500 mt-1">Aus wie vielen Fragen soll die Test-Klausur bestehen?</p>
+                    <div class="bg-stone-50 dark:bg-stone-800/80 p-4 rounded-lg border border-stone-200 dark:border-stone-700 transition-colors">
+                        <label class="block text-sm font-bold text-stone-700 dark:text-stone-300 mb-2 transition-colors" for="exam-question-count">Anzahl der Fragen:</label>
+                        <input type="number" id="exam-question-count" value="3" min="1" max="50" class="w-full px-4 py-2 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-800 dark:text-stone-100 rounded-md focus:ring-red-500 focus:border-red-500 transition-colors">
+                        <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 transition-colors">Aus wie vielen Fragen soll die Test-Klausur bestehen?</p>
                     </div>
                 </div>
                 
                 <div class="flex justify-center">
-                    <button onclick="app.startExam()" class="bg-red-700 text-white px-8 py-4 rounded-lg hover:bg-red-800 shadow-lg font-bold text-lg transition-all w-full">
+                    <button onclick="app.startExam()" class="bg-red-700 dark:bg-red-600 text-white px-8 py-4 rounded-lg hover:bg-red-800 dark:hover:bg-red-700 shadow-lg font-bold text-lg transition-all w-full">
                         Klausur jetzt starten
                     </button>
                 </div>
             </div>
 
             <div id="exam-active" class="hidden space-y-8">
-                <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-lg mb-8">
-                    <h3 class="text-red-800 font-bold">Wichtiger Hinweis:</h3>
-                    <p class="text-red-700 text-sm">Dies ist eine Closed-Book-Simulation. Nutze keine Hilfsmittel. Die eigentlichen Antworten schreibst du extern (auf Papier/digital). Die Textfelder hier dienen nur für deine Struktur-Notizen.</p>
+                <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-600 p-4 rounded-r-lg mb-8 transition-colors">
+                    <h3 class="text-red-800 dark:text-red-400 font-bold transition-colors">Wichtiger Hinweis:</h3>
+                    <p class="text-red-700 dark:text-red-300 text-sm transition-colors">Dies ist eine Closed-Book-Simulation. Nutze keine Hilfsmittel. Die eigentlichen Antworten schreibst du extern (auf Papier/digital). Die Textfelder hier dienen nur für deine Struktur-Notizen.</p>
                 </div>
 
                 <div id="exam-questions-container" class="space-y-12">
                     </div>
 
-                <div class="pt-8 border-t border-stone-200 flex justify-end">
-                    <button onclick="app.finishExam()" class="bg-stone-800 text-white px-8 py-4 rounded-lg hover:bg-black shadow-lg font-bold text-lg transition-all">
+                <div class="pt-8 border-t border-stone-200 dark:border-stone-700 flex justify-end transition-colors">
+                    <button onclick="app.finishExam()" class="bg-stone-800 dark:bg-stone-700 text-white px-8 py-4 rounded-lg hover:bg-black dark:hover:bg-stone-600 shadow-lg font-bold text-lg transition-all">
                         Klausur abgeben & Auswerten
                     </button>
                 </div>
             </div>
 
             <div id="exam-results" class="hidden space-y-8">
-                <div class="bg-emerald-50 border border-emerald-200 p-8 rounded-xl text-center">
-                    <h2 class="text-3xl font-bold text-emerald-800 mb-2">Klausur beendet!</h2>
-                    <p class="text-emerald-700">Vergleiche nun deine Notizen und (externen) Antworten kritisch mit den Musterlösungen aus dem Katalog.
+                <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-8 rounded-xl text-center transition-colors">
+                    <h2 class="text-3xl font-bold text-emerald-800 dark:text-emerald-400 mb-2 transition-colors">Klausur beendet!</h2>
+                    <p class="text-emerald-700 dark:text-emerald-300 transition-colors">Vergleiche nun deine Notizen und (externen) Antworten kritisch mit den Musterlösungen aus dem Katalog.
                         Und wenn du möchtest, gebe deine Texte deine:r Tutor:in ab (Mit Aufgabenstellung!) </p>
                 </div>
                 
                 <div id="exam-results-container" class="space-y-10">
                     </div>
 
-                <div class="flex justify-center mt-8">
-                    <button onclick="app.resetExam()" class="bg-stone-200 text-stone-700 px-6 py-3 rounded-lg hover:bg-stone-300 transition-colors font-medium">
+                <div class="flex justify-center mt-8 gap-4 flex-wrap">
+                    <button onclick="app.resetExam()" class="bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 px-6 py-3 rounded-lg hover:bg-stone-300 dark:hover:bg-stone-600 transition-colors font-medium">
                         Zurück zur Startseite
+                    </button>
+                    <button onclick="app.exportExamAsTextFile()" id="btn-export-exam" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 shadow-md transition-colors font-medium flex items-center" title="Hier kannst du die Fragen als Textdatei (.txt) herunterladen, um sie dann einfach deiner Tutor:in zu geben!">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Als Textdatei speichern (.txt)
                     </button>
                 </div>
             </div>
@@ -288,572 +320,30 @@
 
     </main>
 
-    <footer class="bg-stone-100 border-t border-stone-200 py-8 mt-12">
-        <div class="container mx-auto px-4 text-center text-stone-500 text-sm">
+    <footer class="bg-stone-100 dark:bg-stone-800/50 border-t border-stone-200 dark:border-stone-700 py-8 mt-12 transition-colors">
+        <div class="container mx-auto px-4 text-center text-stone-500 dark:text-stone-400 text-sm transition-colors">
             <p>&copy; 2025 Klausurtrainer Pädagogik. Basierend auf den Vorlesungsunterlagen von R. Bolle.</p>
         </div>
     </footer>
 
     <!-- Scroll to Top Button -->
-    <button id="btn-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-8 right-8 bg-emerald-600 text-white p-3 rounded-full shadow-lg hover:bg-emerald-700 transition-all opacity-0 pointer-events-none translate-y-4" aria-label="Nach oben scrollen">
+    <button id="btn-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-8 right-8 bg-emerald-600 dark:bg-emerald-500 text-white p-3 rounded-full shadow-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-all opacity-0 pointer-events-none translate-y-4" aria-label="Nach oben scrollen">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
     </button>
 
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
     <script>
-        // =========================================================================
-        // 📝 HIER FRAGEN UND THEMEN FÜR DEN KATALOG BEARBEITEN
-        // (Diese Liste speist nun automatisch auch den Klausur-Modus!)
-        // =========================================================================
-        
-        const categories = [
-            {
-                id: 'wiss',
-                title: '1. Wissenschaft, Studium & Professionalisierung',
-                questions: [
-                    { id: 1, q: 'Erläutern Sie den Unterschied zwischen einem „Brotgelehrten“ und einem „philosophischen Kopf“ nach Friedrich Schiller.', a: 'Brotgelehrter: Zweck des Studiums liegt außen (Erwerb, Karriere), sieht keine Zusammenhänge. Philosophischer Kopf: Zweck liegt in der Sache selbst, sucht die Einheit und Harmonie des Wissens, verbindet Disziplinen.' },
-                    { id: 2, q: 'Warum betrachtet Rainer Bolle das Studium als „Bildungsgang“ und welche Rolle spielt dabei das Portfolio?', a: 'Studium ist Persönlichkeitsentwicklung (Bildung), nicht nur Wissenserwerb. Portfolio dient der reflexiven Auseinandersetzung mit der eigenen Entwicklung, Theorie und Praxis.' },
-                    { id: 3, q: 'Was bedeutet der Begriff „Professionalität“ im Lehrerberuf aus allgemein-pädagogischer Sicht?', a: 'Nicht nur technisches Können (Handwerk), sondern pädagogischer Takt, reflexive Haltung, Verbindung von Theorie und Praxis, und ethische Verantwortung (Anwaltschaft für das Kind).' },
-                    { id: 4, q: 'Inwiefern ist Pädagogik eine „Wissenschaft“ und wie unterscheidet sie sich von reiner Praxiserfahrung?', a: 'Pädagogik reflektiert systematisch über Erziehung (Begriffe, Ziele, Methoden). Praxis ist das Handeln selbst. Wissenschaft liefert die Theorie, um die Praxis kritisch zu hinterfragen und zu verbessern ("Theorie der Praxis").' }
-                ]
-            },
-            {
-                id: 'aufkl',
-                title: '2. Aufklärung & Mündigkeit',
-                questions: [
-                    { id: 5, q: 'Definieren Sie „Aufklärung“ nach Immanuel Kant und erläutern Sie den Begriff der „selbstverschuldeten Unmündigkeit“.', a: 'Aufklärung: "Ausgang des Menschen aus seiner selbstverschuldeten Unmündigkeit." Unmündigkeit: Unvermögen, sich seines Verstandes ohne Leitung anderer zu bedienen. Selbstverschuldet: Ursache liegt nicht im Mangel an Verstand, sondern an Mut/Entschließung ("Sapere aude!").' },
-                    { id: 6, q: 'Warum ist Erziehung laut Kant das „größte und schwerste Problem“, das dem Menschen aufgegeben werden kann?', a: 'Weil der Mensch nur durch Erziehung zum Menschen wird, aber die Erzieher selbst nur erzogene Menschen sind. Problem der Balance zwischen Freiheit und Zwang.' },
-                    { id: 7, q: 'Erläutern Sie die Forderung Adornos: „Die allererste Forderung an Erziehung ist, dass Auschwitz nicht noch einmal sei.“', a: 'Fundamentale moralische Basis der Pädagogik nach dem Holocaust. Erziehung muss zur Reflexion, Autonomie und Widerstand gegen blinden Gehorsam/Barbarei befähigen.' },
-                    { id: 8, q: 'Was versteht die Kritische Theorie unter dem Begriff der „Mündigkeit“?', a: 'Fähigkeit zur Kritik, zum Widerspruch, zur Autonomie gegenüber gesellschaftlichen Zwängen und Ideologien. Emanzipation (Weiterentwicklung) von Herrschaft.' },
-                    { id: 9, q: 'Erklären Sie das Problem der „Halbbildung“ nach Adorno.', a: 'Oberflächliche Aneignung von Kultur/Wissen ohne tiefes Verständnis oder existentielle Bedeutung. Bildung wird zur Ware und zum Statussymbol, verliert ihre kritische Kraft.' }
-                ]
-            },
-            {
-                id: 'adler',
-                title: '3. Anthropologie & Individualpsychologie (Alfred Adler)',
-                questions: [
-                    { id: 10, q: 'Was ist der „Lebensstil“ (oder Lebensplan) in der Individualpsychologie und wie entsteht er?', a: 'Die einzigartige, unbewusste Richtlinie einer Person, wie sie Ziele erreicht und Probleme löst. Entsteht in der frühen Kindheit (ca. bis zum 5. Lebensjahr) als Antwort auf Umwelterfahrungen.' },
-                    { id: 11, q: 'Erläutern Sie das „Gemeinschaftsgefühl“ als zentralen Maßstab für psychische Gesundheit.', a: 'Fähigkeit zur Kooperation, Empathie und Beitrag zum Wohl anderer. Psychische Gesundheit = hohes Gemeinschaftsgefühl.' },
-                    { id: 12, q: 'Was versteht Adler unter dem „Minderwertigkeitskomplex“ und wie hängen Kompensation und Überlegenheitsstreben damit zusammen?', a: 'Jeder Mensch fühlt sich anfangs (als Kind) minderwertig. Dies treibt zur Entwicklung an (Kompensation). Ein "Komplex" entsteht bei Entmutigung. Überlegenheitsstreben ist der Versuch, dieses Gefühl (oft fehlerhaft) zu überwinden.' },
-                    { id: 13, q: 'Welche pädagogischen Konsequenzen zieht Adler aus der „Geschwisterkonstellation“?', a: 'Die Position (Ältester, Jüngster, Einzelkind) prägt den Charakter. Pädagogen müssen verstehen, wie das Kind seine Rolle in der Gruppe interpretiert.' },
-                    { id: 14, q: 'Warum betrachtet Adler „Faulheit“ oder „Unterrichtsstörungen“ nicht als isolierte Symptome, sondern als Teil der „Einheit der Persönlichkeit“?', a: 'Alles Verhalten ist zielgerichtet (final). Faulheit kann ein Schutz vor blamablem Versagen sein. Stören kann ein Weg sein, Aufmerksamkeit (Geltung) zu erzwingen.' },
-                    { id: 15, q: 'Erläutern Sie den Begriff der „Erziehung zum Mut“ bei Adler.', a: 'Ermutigung ist das wichtigste pädagogische Mittel. Dem Kind Zutrauen in die eigenen Fähigkeiten geben, damit es Aufgaben der Gemeinschaft bewältigt.' },
-                    { id: 16, q: 'Was kritisiert Adler am Konzept des „verzärtelten Kindes“?', a: 'Verzärtelung nimmt dem Kind die Erfahrung der Selbstwirksamkeit. Es lernt, dass andere für es sorgen, entwickelt kein Gemeinschaftsgefühl, sondern tyrannische Erwartungshaltungen.' }
-                ]
-            },
-            {
-                id: 'rousseau',
-                title: '4. Klassische Pädagogik: Rousseau',
-                questions: [
-                    { id: 17, q: 'Erläutern Sie Rousseaus Grundannahme: „Alles ist gut, wie es aus den Händen des Schöpfers kommt...“', a: 'Naturzustand ist gut. Gesellschaft/Kultur verdirbt den Menschen durch Ungleichheit, Konkurrenz und falsche Bedürfnisse. Erziehung muss die natürliche Güte schützen.' },
-                    { id: 18, q: 'Was versteht Rousseau unter „Negativer Erziehung“?', a: 'Im Kindesalter, ist es ein nicht direktes Belehren oder Tugend-Predigen, sondern Bewahren des Zöglings vor schädlichen Einflüssen ("Zeit verlieren statt gewinnen"). Lernen durch Erfahrung, nicht durch Worte.' },
-                    { id: 19, q: 'Nennen und erläutern Sie die drei Quellen der Erziehung nach Rousseau.', a: '1. Natur (innere Entwicklung der Organe/Kräfte). 2. Dinge (Erfahrung mit der Umwelt). 3. Menschen (Gebrauch der Fähigkeiten). Sie müssen harmonieren.' },
-                    { id: 20, q: 'Warum ist die Kindheit laut Rousseau als Eigenwert und nicht nur als Vorbereitungszeit zu sehen?', a: 'Das Kind hat eine eigene Art zu sehen, zu denken und zu fühlen. Man darf die Gegenwart nicht der Zukunft opfern ("Lasst die Kindheit im Kinder reifen").' },
-                    { id: 21, q: 'Erläutern Sie den Begriff der „Perfectibilité“.', a: 'Die Fähigkeit des Menschen zur (unbegrenzten) Vervollkommnung. Unterscheidet ihn vom Tier, ist aber auch Grund für seinen möglichen Niedergang.' },
-                    { id: 22, q: 'Skizzieren Sie die Rolle des Erziehers im „Emil“.', a: 'Er ist kein klassischer Lehrer ("Magister"), sondern ein "Gouverneur", der Situationen arrangiert ("inszeniert"), damit Emil scheinbar frei, aber gelenkt durch die Dinge lernt.' }
-                ]
-            },
-            {
-                id: 'klassiker',
-                title: '5. Klassiker: Kant, Humboldt, Schleiermacher',
-                questions: [
-                    { id: 23, q: 'Nennen Sie die vier Stufen der Erziehung nach Kant.', a: '1. Disziplinierung (Triebbeherrschung). 2. Kultivierung (Geschicklichkeit/Kulturtechniken). 3. Zivilisierung (Soziale Kompetenz/Manieren). 4. Moralisierung (Handeln aus Einsicht/Pflicht).' },
-                    { id: 24, q: 'Warum ist für Kant die „Moralisierung“ der wichtigste, aber schwierigste Teil?', a: 'Weil man Freiheit nicht erzwingen kann. Der Zögling muss lernen, "das Gute" aus eigener innerer Überzeugung zu tun (Kategorischer Imperativ), nicht aus Angst vor Strafe.' },
-                    { id: 25, q: 'Erläutern Sie das humboldtsche Bildungsideal.', a: '"Höchste und proportionierlichste Bildung der Kräfte zu einem Ganzen." Allseitige Entfaltung aller menschlichen Anlagen, nicht einseitige Spezialisierung.' },
-                    { id: 26, q: 'Unterscheidung „allgemeine Menschenbildung“ vs. „Spezialbildung“ (Humboldt).', a: 'Zuerst muss der Mensch zum Menschen gebildet werden (Allgemeinbildung), erst danach kommt die berufliche Spezialisierung. Bildung ist Selbstzweck.' },
-                    { id: 27, q: 'Humboldts Konzept der Universität.', a: 'Einheit von Forschung und Lehre. Einsamkeit (Ruhe zur Vertiefung) und Freiheit (Lehr- und Lernfreiheit). Gemeinschaft von Lehrenden und Lernenden.' },
-                    { id: 28, q: 'Was bedeutet „Dialektik der Erziehung“ bei Schleiermacher?', a: 'Spannungsverhältnis zwischen: Einwirkung auf die Zukunft (Entwicklung) vs. Befriedigung der Gegenwart (Eigenrecht des Kindes).' },
-                    { id: 29, q: 'Die vier Prinzipien nach Schleiermacher.', a: 'Behüten (vor Schädlichem), Unterstützen (guter Anlagen), Gegenwirken (bei Fehlentwicklungen), Gewährenlassen (Freiheit geben).' },
-                    { id: 30, q: 'Wann endet die Erziehung nach Schleiermacher.', a: 'Ablieferung an die vier Lebensbereiche (Staat, Kirche, Geselligkeit, Wissenschaft). Erziehung endet, wenn der Zögling sich selbst weiterbilden kann.' }
-                ]
-            },
-            {
-                id: 'herbart',
-                title: '6. Systematische Pädagogik: Herbart',
-                questions: [
-                    { id: 31, q: 'Was versteht Herbart unter „Erziehendem Unterricht“?', a: 'Einheit von Wissensvermittlung und Charakterbildung. Unterricht, der nicht nur Wissen anhäuft, sondern den Willen und Charakter formt.' },
-                    { id: 32, q: 'Erläutern Sie den Begriff des „Gedankenkreises“ und der Bedeutung für die Willensbildung.', a: 'Der Wille entspringt den Gedanken ("Wir wollen nur, was wir wissen"). Ein reicher, geordneter Gedankenkreis ermöglicht einen starken, sittlichen Charakter.' },
-                    { id: 33, q: 'Definieren Sie die „Vielseitigkeit des Interesses“ und die sechs Interessenklassen.', a: 'Ziel des Unterrichts. 1. Empirisch, 2. Spekulativ, 3. Ästhetisch (Erkenntnis). 4. Sympathisch, 5. Gesellschaftlich, 6. Religiös (Teilnahme).' },
-                    { id: 34, q: 'Was ist die „Ästhetische Darstellung der Welt“ bei Herbart.', a: 'Pädagogik soll die Welt so zeigen, dass sie Wohlgefallen (Interesse) und moralisches Urteil anregt. Ästhetik hier im Sinne von Wahrnehmung und Beurteilung.' },
-                    { id: 35, q: 'Verhältnis von „Regierung“, „Unterricht“ und „Zucht“.', a: 'Regierung: Äußere Ordnung halten (gegen Wildheit). Unterricht: Bildung des Gedankenkreises. Zucht: Direkte Formung des Charakters/Gesinnung.' },
-                    { id: 36, q: 'Was ist der „Pädagogische Takt“?', a: 'Das Bindeglied zwischen Theorie und Praxis. Die Fähigkeit des Lehrers, in der konkreten Situation schnell und richtig zu entscheiden (nicht durch Regeln lernbar, sondern durch Übung/Reflexion).' }
-                ]
-            },
-            {
-                id: 'kritik',
-                title: '7. Moderne Bildungskritik & Anthropologie',
-                questions: [
-                    { id: 37, q: 'Unterscheiden Sie „Haben“ und „Sein“ unter Fromm.', a: 'Haben: Wissen als Besitz, Auswendiglernen, Konsum. Sein: Wissen als Prozess, Durchdringung, Veränderung der eigenen Person.' },
-                    { id: 38, q: ' Was ist die „Kopernikanische Wende“ in der Sinnfrage nach Viktor Frankl.', a: 'Nicht wir fragen nach dem Sinn des Lebens, sondern das Leben fragt uns. Wir müssen durch unser Handeln antworten.' },
-                    { id: 39, q: 'Definieren Sie Liessmanns Begriff der „Unbildung“.', a: 'Wissensgesellschaft ≠ Bildungsgesellschaft. Reduktion von Bildung auf verwertbare Kompetenzen und Informationen. Verlust des Verstehens.' },
-                    { id: 40, q: 'Warum lässt sich Wissen laut Liessmann nicht „auslagern“?', a: 'Daten kann man speichern, Wissen muss im Subjekt (im Kopf) geschehen. Wissen erfordert Denken und Verknüpfung.' }
-                ]
-            },
-            {
-                id: 'handeln',
-                title: '8. Pädagogisches Handeln, Theorie & Praxis',
-                questions: [
-                    { id: 41, q: 'Was beschreibt Dietrich Benners: Prinzip der „Bildsamkeit“.', a: 'Anerkennung des Anderen als zur Selbstbestimmung fähiges Wesen. Keine bloße Formbarkeit, sondern Mitwirkung des Zöglings.' },
-                    { id: 42, q: '„Was ist die Aufforderung zur Selbsttätigkeit“.', a: 'Erziehung ist Interaktion: Der Erzieher fordert den Zögling auf, selbst tätig zu werden. Der Zögling antwortet durch Handeln.' },
-                    { id: 43, q: '„Was ist die Negativität der Erfahrung“ (Benner).', a: 'Lernen geschieht oft durch Scheitern, Widerstand, Enttäuschung. Erfahrungen, die bisherige Annahmen widerlegen, sind besonders bildend.' },
-                    { id: 44, q: '„Pädagogischer Bezug“ nach Herman Nohl.', a: 'Das leidenschaftliche Verhältnis des Erziehers zum Zögling. Zum Wohl des Zöglings (nicht für Staat/Wirtschaft). Geprägt von Liebe und Autorität.' },
-                    { id: 45, q: '„Sokratischer Eid“ von Hartmut von Hentig.', a: 'Verpflichtung der Lehrer/Pädagogen zum Schutz des Kindes. "Ich verpflichte mich, die Eigenart jedes Kindes zu achten...".' },
-                    { id: 46, q: 'Verhältnis Theorie und Praxis nach Erich Weniger.', a: 'Theorie ist die "Theorie der Praxis" (für die Praxis, aus der Praxis). Theorie soll die Praxis aufklären, nicht bevormunden.' },
-                    { id: 47, q: 'Kritik am Modell der „Trivial-Maschine“.', a: 'Menschen sind nicht-triviale Maschinen (Heinz von Foerster). Gleicher Input führt nicht zu gleichem Output (Wegen innerer Zustände/Freiheit).' },
-                    { id: 48, q: 'Bedeutung von „Vertrauen“ bei Royston Maldoom.', a: 'Bedingungsloses Vertrauen in das Potential des Schülers ("Du kannst das!"). Ermöglicht Höchstleistungen und Selbstüberwindung.' },
-                    { id: 49, q: '„Nicht-Affirmative Bildungstheorie“.', a: 'Erziehung darf nicht nur bestehende Verhältnisse bestätigen (affirmieren), sondern muss zur Kritik und zur Gestaltung einer besseren Zukunft befähigen.' },
-                    { id: 50, q: 'Zusammenhang „Sehen“, „Wahrnehmen“, „Handeln“.', a: 'Pädagogisches Handeln setzt pädagogisches Sehen (Wahrnehmen der Situation/Bedürfnisse des Kindes) voraus. Theorie schult den Blick.' }
-                ]
-            }
-        ];
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').then(function(registration) {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+          });
+        }
 
-        // =========================================================================
-        // ⚙️ APP LOGIK
-        // =========================================================================
-
-        const app = {
-            state: {
-                view: 'dashboard',
-                learnedQuestions: JSON.parse(localStorage.getItem('paed_learned') || '[]'),
-                currentFocusIndex: 0,
-                isFocusAnswerVisible: false,
-                
-                // Klausur State
-                examActive: false,
-                examTimerSeconds: 0,
-                examInterval: null,
-                currentExamQuestions: [], 
-                examAnswers: {}
-            },
-
-            getTotalQuestions() { return categories.reduce((sum, cat) => sum + cat.questions.length, 0); },
-            
-            // Holt sich alle Fragen als flache Liste, um daraus zufällige ziehen zu können
-            getAllQuestionsFlat() { return categories.flatMap(c => c.questions.map(q => ({...q, category: c.title}))); },
-
-            init() {
-                document.getElementById('lbl-total-q').textContent = this.getTotalQuestions();
-                document.getElementById('lbl-total-c').textContent = categories.length;
-
-                this.renderCategories();
-                this.updateCharts();
-                this.updateUI();
-            },
-
-            setView(viewName) {
-                if (this.state.examActive && viewName !== 'exam') {
-                    if(!confirm("Klausur läuft! Wenn du die Ansicht wechselst, wird die Klausur abgebrochen. Wirklich verlassen?")) {
-                        return;
-                    } else {
-                        this.finishExam(true); // Abbruch
-                    }
-                }
-
-                this.state.view = viewName;
-                
-                ['dashboard', 'updates', 'learn', 'focus', 'exam'].forEach(v => {
-                    // Update Desktop nav
-                    const el = document.getElementById(`nav-${v}`);
-                    // Update Mobile nav
-                    const elMobile = document.getElementById(`nav-${v}-mobile`);
-                    const container = document.getElementById(`view-${v}`);
-                    
-                    if (v === viewName) {
-                        if(el) {
-                            el.classList.add('bg-stone-100');
-                            if(v === 'exam') el.classList.add('text-red-700', 'bg-red-50');
-                            else el.classList.add('text-emerald-700', 'bg-emerald-50');
-                        }
-                        if(elMobile) {
-                            elMobile.classList.add('bg-stone-50');
-                            if(v === 'exam') elMobile.classList.add('text-red-700');
-                            else elMobile.classList.add('text-emerald-700');
-                        }
-                        if(container) container.classList.remove('hidden');
-                        
-                        if(v === 'focus') this.renderFocusCard();
-                        if(v === 'dashboard') this.updateCharts(); 
-                    } else {
-                        if(el) {
-                            el.classList.remove('bg-stone-100', 'text-emerald-700', 'bg-emerald-50', 'text-red-700', 'bg-red-50');
-                            el.classList.add('text-stone-600');
-                        }
-                        if(elMobile) {
-                            elMobile.classList.remove('bg-stone-50', 'text-emerald-700', 'text-red-700');
-                            elMobile.classList.add('text-stone-600');
-                        }
-                        if(container) container.classList.add('hidden');
-                    }
-                });
-
-                // Scroll to top when changing view
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            },
-
-            toggleMobileMenu(forceClose = false) {
-                const menu = document.getElementById('mobile-menu');
-                if (forceClose || !menu.classList.contains('hidden')) {
-                    menu.classList.add('hidden');
-                } else {
-                    menu.classList.remove('hidden');
-                }
-            },
-
-            resetProgress() {
-                if(confirm("Möchtest du deinen gesamten Lernfortschritt wirklich zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.")) {
-                    this.state.learnedQuestions = [];
-                    this.saveState();
-                    this.updateCharts();
-                    this.updateUI();
-                    this.renderCategories();
-                    alert("Lernfortschritt erfolgreich zurückgesetzt.");
-                }
-            },
-
-            // --- Klausur Logik ---
-
-            startExam() {
-                const minutes = parseInt(document.getElementById('exam-time-input').value) || 90;
-                let questionCount = parseInt(document.getElementById('exam-question-count').value) || 3;
-                
-                // Sicherheitshalber nicht mehr Fragen abfragen, als existieren
-                const maxQuestions = this.getTotalQuestions();
-                if (questionCount > maxQuestions) questionCount = maxQuestions;
-
-                this.state.examTimerSeconds = minutes * 60;
-                this.state.examActive = true;
-                this.state.examAnswers = {}; 
-
-                // ZUFÄLLIGE FRAGEN AUS DEM NORMALEN POOL ZIEHEN
-                const allQuestions = this.getAllQuestionsFlat();
-                const shuffledPool = [...allQuestions].sort(() => 0.5 - Math.random());
-                
-                // Die ausgewählten Fragen für die Klausur aufbereiten
-                this.state.currentExamQuestions = shuffledPool.slice(0, questionCount).map(q => ({
-                    id: 'k_' + q.id,
-                    type: 'open',
-                    question: q.q,
-                    solutionText: q.a,
-                    category: q.category
-                }));
-
-                // UI umstellen
-                document.getElementById('exam-setup').classList.add('hidden');
-                document.getElementById('exam-results').classList.add('hidden');
-                document.getElementById('exam-active').classList.remove('hidden');
-                
-                document.getElementById('nav-links').classList.add('pointer-events-none', 'opacity-30');
-                document.getElementById('exam-timer-bar').classList.remove('hidden');
-
-                this.renderExamQuestions();
-                this.updateTimerDisplay();
-
-                clearInterval(this.state.examInterval);
-                this.state.examInterval = setInterval(() => {
-                    this.state.examTimerSeconds--;
-                    this.updateTimerDisplay();
-                    
-                    if(this.state.examTimerSeconds <= 0) {
-                        alert("Die Zeit ist abgelaufen! Die Klausur wird nun automatisch abgegeben.");
-                        this.finishExam();
-                    }
-                }, 1000);
-            },
-
-            updateTimerDisplay() {
-                const h = Math.floor(this.state.examTimerSeconds / 3600);
-                const m = Math.floor((this.state.examTimerSeconds % 3600) / 60);
-                const s = this.state.examTimerSeconds % 60;
-                let timeStr = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-                if (h > 0) timeStr = `${h}:${timeStr}`;
-                document.getElementById('exam-timer-display').textContent = timeStr;
-            },
-
-            renderExamQuestions() {
-                const container = document.getElementById('exam-questions-container');
-                container.innerHTML = '';
-
-                this.state.currentExamQuestions.forEach((q, index) => {
-                    let html = `
-                        <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm" id="q-container-${q.id}">
-                            <div class="flex items-start mb-4">
-                                <span class="bg-stone-800 text-white font-bold w-8 h-8 flex items-center justify-center rounded-full mr-4 flex-shrink-0">${index + 1}</span>
-                                <div>
-                                    <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block mb-1">${q.category.replace(/^\d+\.\s*/, '')}</span>
-                                    <h3 class="text-lg font-bold text-stone-800 leading-relaxed">${q.question}</h3>
-                                </div>
-                            </div>
-                            
-                            <div class="ml-12 mt-4">
-                                <div class="bg-blue-50 text-blue-800 text-sm p-3 rounded mb-3 border border-blue-200">
-                                    ℹ️ Die eigentliche Beantwortung dieser Frage erfolgt extern auf Papier oder digital. Dieses Feld hier dient nur für deine kurzen Konzept-Notizen.
-                                    Gebe deine Texte einfach deine:r Tutor:in ab. (Natürlich mit Aufgabenstellung ;) )
-                                </div>
-                                <textarea id="ans_${q.id}" class="w-full h-24 p-3 border border-stone-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 text-stone-800" placeholder="Kurze Stichpunkte / Konzept (Optional)"></textarea>
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML += html;
-                });
-            },
-
-            finishExam(aborted = false) {
-                clearInterval(this.state.examInterval);
-                this.state.examActive = false;
-                
-                document.getElementById('nav-links').classList.remove('pointer-events-none', 'opacity-30');
-                document.getElementById('exam-timer-bar').classList.add('hidden');
-
-                if(aborted) {
-                    this.resetExam();
-                    return;
-                }
-
-                // Antworten (Notizen) einsammeln
-                this.state.currentExamQuestions.forEach(q => {
-                    const el = document.getElementById(`ans_${q.id}`);
-                    this.state.examAnswers[q.id] = el ? el.value : '';
-                });
-
-                document.getElementById('exam-active').classList.add('hidden');
-                document.getElementById('exam-results').classList.remove('hidden');
-                
-                this.renderExamResults();
-                window.scrollTo(0, 0);
-            },
-
-            renderExamResults() {
-                const container = document.getElementById('exam-results-container');
-                container.innerHTML = '';
-
-                this.state.currentExamQuestions.forEach((q, index) => {
-                    const userAnswer = this.state.examAnswers[q.id] || "Keine Notizen gemacht.";
-                    let html = `
-                        <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
-                            <h3 class="text-lg font-bold text-stone-800 mb-4">Aufgabe ${index + 1}: ${q.question}</h3>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <h4 class="font-bold text-stone-600 border-b border-stone-200 pb-2 mb-3">Deine Notizen:</h4>
-                                    <div class="bg-stone-50 p-4 rounded border border-stone-200 text-stone-700 whitespace-pre-wrap">${userAnswer}</div>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-emerald-700 border-b border-emerald-200 pb-2 mb-3">Musterlösung aus dem Katalog:</h4>
-                                    <div class="bg-emerald-50 p-4 rounded border border-emerald-200 text-emerald-800 whitespace-pre-wrap">${q.solutionText}</div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML += html;
-                });
-            },
-
-            resetExam() {
-                document.getElementById('exam-setup').classList.remove('hidden');
-                document.getElementById('exam-active').classList.add('hidden');
-                document.getElementById('exam-results').classList.add('hidden');
-                this.setView('dashboard');
-            },
-
-
-            // --- Learning Logic (Rest des Kodes) ---
-            toggleQuestion(id) {
-                const answerEl = document.getElementById(`answer-${id}`);
-                const chevron = document.getElementById(`chevron-${id}`);
-                answerEl.classList.toggle('hidden');
-                chevron.style.transform = answerEl.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-            },
-
-            toggleLearned(id) {
-                const index = this.state.learnedQuestions.indexOf(id);
-                if (index === -1) this.state.learnedQuestions.push(id);
-                else this.state.learnedQuestions.splice(index, 1);
-                this.saveState();
-                this.updateQuestionStatusUI(id);
-                this.updateCharts();
-            },
-
-            updateQuestionStatusUI(id) {
-                const btn = document.getElementById(`btn-learn-${id}`);
-                if (!btn) return;
-                if (this.state.learnedQuestions.includes(id)) {
-                    btn.classList.remove('bg-stone-200', 'text-stone-700');
-                    btn.classList.add('bg-emerald-100', 'text-emerald-700', 'border-emerald-200');
-                    btn.innerHTML = '✓ Gelernt';
-                } else {
-                    btn.classList.add('bg-stone-200', 'text-stone-700');
-                    btn.classList.remove('bg-emerald-100', 'text-emerald-700', 'border-emerald-200');
-                    btn.innerHTML = 'Als gelernt markieren';
-                }
-            },
-
-            saveState() {
-                localStorage.setItem('paed_learned', JSON.stringify(this.state.learnedQuestions));
-                this.updateUI();
-            },
-
-            updateUI() {
-                const total = this.getTotalQuestions();
-                const learned = this.state.learnedQuestions.length;
-                document.getElementById('total-progress-text').textContent = `${learned}/${total} Fragen gemeistert`;
-            },
-
-            expandAll() {
-                document.querySelectorAll('[id^="answer-"]').forEach(el => el.classList.remove('hidden'));
-                document.querySelectorAll('[id^="chevron-"]').forEach(el => el.style.transform = 'rotate(180deg)');
-            },
-
-            collapseAll() {
-                document.querySelectorAll('[id^="answer-"]').forEach(el => el.classList.add('hidden'));
-                document.querySelectorAll('[id^="chevron-"]').forEach(el => el.style.transform = 'rotate(0deg)');
-            },
-
-            // --- Focus Mode Logic ---
-            renderFocusCard() {
-                const allQuestions = this.getAllQuestionsFlat();
-                if(allQuestions.length === 0) return; 
-                
-                const q = allQuestions[this.state.currentFocusIndex];
-                
-                document.getElementById('focus-question').textContent = q.q;
-                document.getElementById('focus-answer').textContent = q.a;
-                document.getElementById('focus-category').textContent = q.category.replace(/^\d+\.\s*/, ''); 
-                document.getElementById('focus-counter').textContent = `${this.state.currentFocusIndex + 1}/${allQuestions.length}`;
-                
-                this.state.isFocusAnswerVisible = false;
-                document.getElementById('focus-answer-container').classList.add('hidden');
-                document.getElementById('btn-reveal').textContent = "Antwort zeigen";
-                
-                const markBtn = document.getElementById('btn-mark-learned');
-                if (this.state.learnedQuestions.includes(q.id)) {
-                     markBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                     markBtn.innerHTML = '✓ Bereits gelernt';
-                } else {
-                     markBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                     markBtn.innerHTML = '✓ Als gelernt markieren';
-                }
-            },
-
-            toggleFocusAnswer() {
-                this.state.isFocusAnswerVisible = !this.state.isFocusAnswerVisible;
-                const containerEl = document.getElementById('focus-answer-container');
-                const btnEl = document.getElementById('btn-reveal');
-                
-                if (this.state.isFocusAnswerVisible) {
-                    containerEl.classList.remove('hidden');
-                    btnEl.textContent = "Antwort verbergen";
-                } else {
-                    containerEl.classList.add('hidden');
-                    btnEl.textContent = "Antwort zeigen";
-                }
-            },
-
-            nextFocus() {
-                if (this.state.currentFocusIndex < this.getTotalQuestions() - 1) {
-                    this.state.currentFocusIndex++;
-                    this.renderFocusCard();
-                }
-            },
-
-            prevFocus() {
-                if (this.state.currentFocusIndex > 0) {
-                    this.state.currentFocusIndex--;
-                    this.renderFocusCard();
-                }
-            },
-            
-            markCurrentFocusLearned() {
-                const currentId = this.getAllQuestionsFlat()[this.state.currentFocusIndex].id;
-                if (!this.state.learnedQuestions.includes(currentId)) {
-                    this.toggleLearned(currentId);
-                    this.renderFocusCard(); 
-                }
-            },
-
-            renderCategories() {
-                const container = document.getElementById('categories-container');
-                container.innerHTML = categories.map(cat => `
-                    <div class="bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden">
-                        <div class="bg-stone-50 px-6 py-4 border-b border-stone-100 flex justify-between items-center">
-                            <h3 class="font-bold text-stone-700">${cat.title}</h3>
-                            <span class="text-xs font-mono bg-white px-2 py-1 rounded border border-stone-200 text-stone-500">
-                                ${cat.questions.filter(q => this.state.learnedQuestions.includes(q.id)).length}/${cat.questions.length}
-                            </span>
-                        </div>
-                        <div class="divide-y divide-stone-100">
-                            ${cat.questions.map(q => `
-                                <div class="p-6 hover:bg-stone-50/50 transition-colors group">
-                                    <div class="flex items-start justify-between cursor-pointer" onclick="app.toggleQuestion(${q.id})">
-                                        <div class="flex items-start space-x-4">
-                                            <span class="font-mono text-stone-400 text-sm mt-1">#${q.id}</span>
-                                            <p class="font-medium text-stone-800 text-lg pr-4">${q.q}</p>
-                                        </div>
-                                        <svg id="chevron-${q.id}" class="w-5 h-5 text-stone-400 transform transition-transform duration-200 mt-1 flex-shrink-0 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </div>
-                                    <div id="answer-${q.id}" class="hidden mt-4 ml-10 pl-4 border-l-2 border-emerald-200 animate-fade-in">
-                                        <p class="text-stone-600 leading-relaxed mb-4">${q.a}</p>
-                                        <button id="btn-learn-${q.id}" onclick="event.stopPropagation(); app.toggleLearned(${q.id})" class="text-xs px-3 py-1.5 rounded border transition-colors ${this.state.learnedQuestions.includes(q.id) ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-stone-200 text-stone-700 border-stone-200 hover:bg-stone-300'}">
-                                            ${this.state.learnedQuestions.includes(q.id) ? '✓ Gelernt' : 'Als gelernt markieren'}
-                                        </button>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `).join('');
-            },
-
-            // --- Charts ---
-            charts: {},
-            updateCharts() {
-                const labels = categories.map(c => c.title.replace(/^\d+\.\s*/, '').substring(0, 15) + '...');
-                const dataTotal = categories.map(c => c.questions.length);
-                const dataLearned = categories.map(c => c.questions.filter(q => this.state.learnedQuestions.includes(q.id)).length);
-                const totalLearned = this.state.learnedQuestions.length;
-                const totalQuestions = this.getTotalQuestions();
-
-                const ctxTopic = document.getElementById('topicChart').getContext('2d');
-                if (this.charts.topic) this.charts.topic.destroy();
-                this.charts.topic = new Chart(ctxTopic, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            { label: 'Gelernt', data: dataLearned, backgroundColor: '#10b981', borderRadius: 4 },
-                            { label: 'Offen', data: dataTotal.map((t, i) => t - dataLearned[i]), backgroundColor: '#e7e5e4', borderRadius: 4 }
-                        ]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, grid: { color: '#f5f5f4' } } }, plugins: { legend: { display: false } } }
-                });
-
-                const ctxOverall = document.getElementById('overallChart').getContext('2d');
-                if (this.charts.overall) this.charts.overall.destroy();
-                this.charts.overall = new Chart(ctxOverall, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Gelernt', 'Noch offen'],
-                        datasets: [{ data: [totalLearned, totalQuestions - totalLearned], backgroundColor: ['#10b981', '#e7e5e4'], borderWidth: 0 }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom' } } },
-                    plugins: [{
-                        id: 'textCenter',
-                        beforeDraw: function(chart) {
-                            var width = chart.width, height = chart.height, ctx = chart.ctx;
-                            ctx.restore();
-                            var fontSize = (height / 114).toFixed(2);
-                            ctx.font = "bold " + fontSize + "em sans-serif";
-                            ctx.textBaseline = "middle";
-                            ctx.fillStyle = "#1c1917";
-                            var percentageStr = totalQuestions > 0 ? Math.round((totalLearned/totalQuestions)*100) + "%" : "0%";
-                            var textX = Math.round((width - ctx.measureText(percentageStr).width) / 2), textY = height / 2;
-                            ctx.fillText(percentageStr, textX, textY);
-                            ctx.save();
-                        }
-                    }]
-                });
-            }
-        };
-
-        // Start App
         document.addEventListener('DOMContentLoaded', () => {
             app.init();
 
