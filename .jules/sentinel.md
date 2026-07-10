@@ -1,0 +1,4 @@
+## 2024-07-10 - Fix DOM-based XSS in Exam Results
+**Vulnerability:** A Cross-Site Scripting (XSS) vulnerability was found in the `renderExamResults` function in `js/app.js`. User notes (from textareas) were stored and directly interpolated into the `innerHTML` of the exam results container without any HTML entity escaping.
+**Learning:** Even internal tool-like functionality or single-page applications without a backend must sanitize user input before rendering it as HTML. The application trusted the `examAnswers` object directly, creating a risk where malicious JavaScript could be executed if a user (or an attacker simulating a user session) provided payloads in their notes.
+**Prevention:** Always escape user input when interpolating it into HTML contexts. Implemented a robust `escapeHtml` utility function that escapes `&`, `<`, `>`, `"`, and `'`. This should be used consistently anywhere user-provided data is inserted into the DOM.
