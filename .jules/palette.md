@@ -1,0 +1,3 @@
+## 2024-07-24 - Semantic Buttons for Expandable Sections
+**Learning:** Found an accessibility issue pattern specific to this app's component structure: expandable sections in lists (like `renderCategories`) were using `<div>` elements with `onclick` handlers, making them completely inaccessible to keyboard navigation and screen readers.
+**Action:** When adding or modifying interactive elements, always replace inaccessible `<div>` tags with semantic `<button>` tags. Apply `w-full text-left` to maintain layout, ensure focus styles are provided (e.g. `focus-visible:ring-2`), and manage state explicitly using `aria-expanded` and `aria-controls` properties tied to app state toggle methods.
