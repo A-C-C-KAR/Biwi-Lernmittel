@@ -246,8 +246,21 @@
                 const container = document.getElementById('exam-results-container');
                 container.innerHTML = '';
 
+                const escapeHTML = (str) => {
+                    return str.replace(/[&<>'"]/g,
+                        tag => ({
+                            '&': '&amp;',
+                            '<': '&lt;',
+                            '>': '&gt;',
+                            "'": '&#39;',
+                            '"': '&quot;'
+                        }[tag] || tag)
+                    );
+                };
+
                 this.state.currentExamQuestions.forEach((q, index) => {
-                    const userAnswer = this.state.examAnswers[q.id] || "Keine Notizen gemacht.";
+                    let userAnswer = this.state.examAnswers[q.id] || "Keine Notizen gemacht.";
+                    userAnswer = escapeHTML(userAnswer);
                     let html = `
                         <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
                             <h3 class="text-lg font-bold text-stone-800 mb-4">Aufgabe ${index + 1}: ${q.question}</h3>
