@@ -1,0 +1,3 @@
+## 2024-07-24 - Accordion Accessibility & Focus States
+**Learning:** Found a pattern of inaccessible `div`-based accordions used for the question list. These lacked keyboard navigation (Tab/Enter support) and proper ARIA states for screen readers. Additionally, `focus:outline-none` was used globally on buttons without `focus-visible` fallbacks, harming keyboard accessibility.
+**Action:** Always convert interactive structural elements like accordions to `<button>` to inherit native keyboard operability. Ensure `aria-expanded` and `aria-controls` are managed dynamically. When removing default browser outlines with `focus:outline-none`, always pair it with `focus-visible:ring-2` to retain visible focus indicators for keyboard users.
