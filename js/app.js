@@ -319,8 +319,11 @@
             toggleQuestion(id) {
                 const answerEl = document.getElementById(`answer-${id}`);
                 const chevron = document.getElementById(`chevron-${id}`);
+                const btn = document.getElementById(`btn-question-${id}`);
                 answerEl.classList.toggle('hidden');
-                chevron.style.transform = answerEl.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+                const isHidden = answerEl.classList.contains('hidden');
+                chevron.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+                if (btn) btn.setAttribute('aria-expanded', !isHidden);
             },
 
             toggleLearned(id) {
@@ -360,11 +363,13 @@
             expandAll() {
                 document.querySelectorAll('[id^="answer-"]').forEach(el => el.classList.remove('hidden'));
                 document.querySelectorAll('[id^="chevron-"]').forEach(el => el.style.transform = 'rotate(180deg)');
+                document.querySelectorAll('[id^="btn-question-"]').forEach(el => el.setAttribute('aria-expanded', 'true'));
             },
 
             collapseAll() {
                 document.querySelectorAll('[id^="answer-"]').forEach(el => el.classList.add('hidden'));
                 document.querySelectorAll('[id^="chevron-"]').forEach(el => el.style.transform = 'rotate(0deg)');
+                document.querySelectorAll('[id^="btn-question-"]').forEach(el => el.setAttribute('aria-expanded', 'false'));
             },
 
             // --- Focus Mode Logic ---
@@ -442,13 +447,13 @@
                         <div class="divide-y divide-stone-100">
                             ${cat.questions.map(q => `
                                 <div class="p-6 hover:bg-stone-50/50 transition-colors group">
-                                    <div class="flex items-start justify-between cursor-pointer" onclick="app.toggleQuestion(${q.id})">
+                                    <button id="btn-question-${q.id}" class="w-full text-left flex items-start justify-between cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded p-1 -m-1" onclick="app.toggleQuestion(${q.id})" aria-expanded="false" aria-controls="answer-${q.id}">
                                         <div class="flex items-start space-x-4">
                                             <span class="font-mono text-stone-400 text-sm mt-1">#${q.id}</span>
                                             <p class="font-medium text-stone-800 text-lg pr-4">${q.q}</p>
                                         </div>
                                         <svg id="chevron-${q.id}" class="w-5 h-5 text-stone-400 transform transition-transform duration-200 mt-1 flex-shrink-0 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </div>
+                                    </button>
                                     <div id="answer-${q.id}" class="hidden mt-4 ml-10 pl-4 border-l-2 border-emerald-200 animate-fade-in">
                                         <p class="text-stone-600 leading-relaxed mb-4">${q.a}</p>
                                         <button id="btn-learn-${q.id}" onclick="event.stopPropagation(); app.toggleLearned(${q.id})" class="text-xs px-3 py-1.5 rounded border transition-colors ${this.state.learnedQuestions.includes(q.id) ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-stone-200 text-stone-700 border-stone-200 hover:bg-stone-300'}">
