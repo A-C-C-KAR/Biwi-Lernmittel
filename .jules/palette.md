@@ -1,0 +1,3 @@
+## 2024-07-17 - Accessible Vanilla JS Accordions
+**Learning:** Interactive accordion headers built with vanilla JS and `<div>` elements are completely ignored by screen readers and unreachable via keyboard navigation. While visual styling makes them appear clickable to sighted users, assistive technologies need proper semantics and state management.
+**Action:** When implementing accordions without a framework, always use semantic `<button>` elements instead of `<div>` tags for the clickable area. Ensure keyboard accessibility with focus states (`focus-visible:ring-2`) and manually manage ARIA states (toggling `aria-expanded="true/false"` and using `aria-controls`) via JavaScript to convey the expanded/collapsed state to screen readers.
