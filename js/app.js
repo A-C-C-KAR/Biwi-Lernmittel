@@ -17,6 +17,18 @@
 
             getTotalQuestions() { return categories.reduce((sum, cat) => sum + cat.questions.length, 0); },
 
+            escapeHTML(str) {
+                return str.replace(/[&<>'"]/g,
+                    tag => ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        "'": '&#39;',
+                        '"': '&quot;'
+                    }[tag])
+                );
+            },
+
             // Holt sich alle Fragen als flache Liste, um daraus zufällige ziehen zu können
             getAllQuestionsFlat() { return categories.flatMap(c => c.questions.map(q => ({...q, category: c.title}))); },
 
@@ -247,7 +259,8 @@
                 container.innerHTML = '';
 
                 this.state.currentExamQuestions.forEach((q, index) => {
-                    const userAnswer = this.state.examAnswers[q.id] || "Keine Notizen gemacht.";
+                    const userAnswerRaw = this.state.examAnswers[q.id] || "Keine Notizen gemacht.";
+                    const userAnswer = this.escapeHTML(userAnswerRaw);
                     let html = `
                         <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
                             <h3 class="text-lg font-bold text-stone-800 mb-4">Aufgabe ${index + 1}: ${q.question}</h3>
