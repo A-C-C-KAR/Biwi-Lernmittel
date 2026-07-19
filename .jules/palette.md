@@ -1,0 +1,3 @@
+## 2024-03-21 - Semantic Buttons for Interactive Elements
+**Learning:** Using `<div>` tags for interactive components like accordions makes them inaccessible to keyboard users and screen readers out-of-the-box in vanilla JS applications. Screen readers rely on semantic HTML and ARIA states to understand interactivity and current state.
+**Action:** Always use semantic `<button>` elements for interactive UI elements instead of `<div>`. Manually manage ARIA states (e.g., toggling `aria-expanded`) via JavaScript to ensure screen reader and keyboard accessibility, particularly in vanilla JS where this isn't handled by a framework.
