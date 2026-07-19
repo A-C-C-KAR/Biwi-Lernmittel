@@ -15,6 +15,19 @@
                 examAnswers: {}
             },
 
+            escapeHTML(str) {
+                if (!str) return '';
+                return str.replace(/[&<>'"]/g,
+                    tag => ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        "'": '&#39;',
+                        '"': '&quot;'
+                    }[tag] || tag)
+                );
+            },
+
             getTotalQuestions() { return categories.reduce((sum, cat) => sum + cat.questions.length, 0); },
 
             // Holt sich alle Fragen als flache Liste, um daraus zufällige ziehen zu können
@@ -255,7 +268,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <h4 class="font-bold text-stone-600 border-b border-stone-200 pb-2 mb-3">Deine Notizen:</h4>
-                                    <div class="bg-stone-50 p-4 rounded border border-stone-200 text-stone-700 whitespace-pre-wrap">${userAnswer}</div>
+                                    <div class="bg-stone-50 p-4 rounded border border-stone-200 text-stone-700 whitespace-pre-wrap">${this.escapeHTML(userAnswer)}</div>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-emerald-700 border-b border-emerald-200 pb-2 mb-3">Musterlösung aus dem Katalog:</h4>

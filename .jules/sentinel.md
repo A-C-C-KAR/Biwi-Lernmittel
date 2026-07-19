@@ -1,0 +1,4 @@
+## 2025-02-12 - DOM-based XSS via .innerHTML injection
+**Vulnerability:** A DOM-based Cross-Site Scripting (XSS) vulnerability was found in the `renderExamResults()` function, where raw user input (exam answers) was injected directly into the HTML using `.innerHTML`.
+**Learning:** This vulnerability existed because the application uses vanilla JavaScript without a templating engine, relying on manual string concatenation and `.innerHTML` for DOM updates. Since user input was not sanitized, any HTML tags or JavaScript payloads in the input were executed by the browser.
+**Prevention:** Always sanitize user input before injecting it into the DOM, especially when using `.innerHTML`. Since there is no templating engine, use a utility function (like `escapeHTML()`) to manually escape HTML entities (e.g., `<, >, &, ", '`) to ensure input is treated as text rather than executable code.
